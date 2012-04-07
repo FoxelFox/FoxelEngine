@@ -17,7 +17,7 @@ void GameMenu::draw(){
 }
 
 void GameMenu::catchMousePosition(Vec2 mpos){
-	mpos.y += screenHeight - 2 *mpos.y;
+    mpos.y += GL_Screen::getHeight() - 2 *mpos.y;
 	for(unsigned int i = 0; i < selectOptions.size(); i++){
 		if(mpos.y > selectOptions[i].getPosition().y-4 && mpos.y < selectOptions[i].getPosition().y+20){
 			selectOptions[i].setTextColor(1.0f,0.0f,0.0f);
@@ -28,7 +28,7 @@ void GameMenu::catchMousePosition(Vec2 mpos){
 }
 
 void GameMenu::catchMouseClick(Vec2 mpos){
-	mpos.y += screenHeight - 2 *mpos.y;
+	mpos.y += GL_Screen::getHeight() - 2 *mpos.y;
 	for(unsigned int i = 0; i < selectOptions.size(); i++){
 		if(mpos.y > selectOptions[i].getPosition().y-4 && mpos.y < selectOptions[i].getPosition().y+20){
 			selectOptions[i].press();		
@@ -40,8 +40,3 @@ void GameMenu::catchMouseClick(Vec2 mpos){
 }
 
 void GameMenu::createEvents(){}
-
-void GameMenu::setScreenSize(int w, int h){
-	screenWidth = w;
-	screenHeight = h;
-}

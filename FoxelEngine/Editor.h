@@ -14,6 +14,7 @@ public:
 	void draw();
 	void catchMousePosition(Vec2 pos);
 	void catchMouseClick(Vec2 pos);
+    void resize();
 	Editor(void);
 	~Editor(void);
 };

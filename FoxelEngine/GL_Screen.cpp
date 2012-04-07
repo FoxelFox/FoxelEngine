@@ -3,8 +3,8 @@
 
 GL_Screen::GL_Screen(int w, int h, bool isFullscreen)
 {
-	width = w;
-	height = h;
+    screenWidth = w;
+    screenHeight = h;
 
 	SDL_WM_SetCaption("Foxel Engine", 0);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,            8);
@@ -24,11 +24,11 @@ GL_Screen::GL_Screen(int w, int h, bool isFullscreen)
 
 	// Fenster erstellen
 	if(isFullscreen){
-		screen = SDL_SetVideoMode(width,height,32,SDL_HWSURFACE |
+		screen = SDL_SetVideoMode(screenWidth,screenHeight,32,SDL_HWSURFACE |
 		   SDL_GL_DOUBLEBUFFER | SDL_OPENGL | SDL_RESIZABLE |
 		   SDL_FULLSCREEN);
 	}else{
-		screen = SDL_SetVideoMode(width,height,32,SDL_HWSURFACE |
+		screen = SDL_SetVideoMode(screenWidth,screenHeight,32,SDL_HWSURFACE |
 			   SDL_GL_DOUBLEBUFFER | SDL_OPENGL | SDL_RESIZABLE);
 	}
 	if(screen == NULL){
@@ -36,22 +36,22 @@ GL_Screen::GL_Screen(int w, int h, bool isFullscreen)
 		getchar();
 	}
 	
-	resize(width,height);
+	resize(screenWidth,screenHeight);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 }
 
 void GL_Screen::resize(int w, int h){
-	width = w;
-	height = h;
+	screenWidth = w;
+	screenHeight = h;
 
-	ar =(float) width / (float) height;
+	ar =(float) screenWidth / (float) screenHeight;
 
 	SDL_UpdateRect(0,0,0,0,0);
 
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, screenWidth, screenHeight);
 	glMatrixMode(GL_PROJECTION);
 	glEnable(GL_TEXTURE_2D);
 }
@@ -59,10 +59,19 @@ void GL_Screen::resize(int w, int h){
 void GL_Screen::load3DView(){
 	glEnable(GL_BLEND);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0,0,width,height);
+	glViewport(0,0,screenWidth,screenHeight);
 	glLoadIdentity();
 	glFrustum(-ar, ar, -1.0, 1.0, 2.0, 16000.0);
 	glMatrixMode(GL_MODELVIEW);
+}
+
+void GL_Screen::load2DView(){
+    glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glViewport(0, 0, screenWidth, screenHeight);
+	glOrtho(0, screenWidth, 0, screenHeight , -128, 128);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 SDL_Surface* GL_Screen::getSurface(){
@@ -70,11 +79,11 @@ SDL_Surface* GL_Screen::getSurface(){
 }
 
 int GL_Screen::getHeight(){
-	return height;
+	return screenHeight;
 }
 
 int GL_Screen::getWidth(){
-	return width;
+	return screenWidth;
 }
 
 GL_Screen::~GL_Screen(void)

@@ -1,5 +1,4 @@
 #include "Main_Menu.h"
-#include "Event.h"
 #include <iostream>
 
 Main_Menu::Main_Menu(void){
@@ -21,8 +20,8 @@ void Main_Menu::draw(){
 	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0, screenWidth, 0, screenHeight, -128, 128);
-
+    glOrtho(0, GL_Screen::getWidth(), 0, GL_Screen::getHeight(), -128, 128);
+   
 	glColor3f(0.1f,0.1f,0.1f);
 	glBegin(GL_QUADS);
 	glVertex2f(position.x, position.y);

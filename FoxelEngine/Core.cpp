@@ -11,8 +11,6 @@ Core::Core(){
 
 bool Core::init(int argc, char *argv[]){
 	config->readConfig("config.cfg");
-	mainMenu = new Main_Menu();
-	mainMenu->setScreenSize(config->getScreenW(),config->getScreenH());
 	//world->init();
 
 	// SDL Initialisieren
@@ -31,6 +29,7 @@ bool Core::init(int argc, char *argv[]){
 		}
 		std::cout << "Using GLEW " << glewGetString(GLEW_VERSION) << "\n\n";
 
+        mainMenu = new Main_Menu();
 		Event::BasicEvent::initEventSystem();
 		running = true;
 		return true;

@@ -31,8 +31,6 @@ void Core::specialEvents(bool* done){
 
 		case SDL_VIDEORESIZE:	
 			screen->resize(sdlEvent->resize.w,sdlEvent->resize.h);
-			mainMenu->setScreenSize(screen->getWidth(),screen->getHeight());
-			if(editor != NULL) editor->setScreenSize(screen->getWidth(),screen->getHeight());
 			*done = true;
 			break;
 	}
