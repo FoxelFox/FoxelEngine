@@ -73,6 +73,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <OutDir>..\..\..\..\Release\Ausgabe\</OutDir>
+    <IntDir>..\..\..\..\Release\temp\</IntDir>
+    <TargetName>Foxel Engine</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -144,6 +147,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Menu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControler.cpp" />
+    <ClCompile Include="PropDynamic.cpp" />
     <ClCompile Include="TextButton.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="ToolBox.cpp" />
@@ -173,6 +178,9 @@
     <ClInclude Include="GL_Screen.h" />
     <ClInclude Include="Main_Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControler.h" />
+    <ClInclude Include="PropDynamic.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="TextField.h" />
     <ClInclude Include="ToolBox.h" />
@@ -182,6 +190,12 @@
     <ClInclude Include="Vec3d.h" />
     <ClInclude Include="View.h" />
     <ClInclude Include="World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FoxelEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Foxel Content\Icon\icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

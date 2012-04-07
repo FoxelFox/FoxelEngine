@@ -156,6 +156,12 @@
     <ClCompile Include="World.cpp">
       <Filter>Quelldateien\World</Filter>
     </ClCompile>
+    <ClCompile Include="PropDynamic.cpp">
+      <Filter>Quelldateien\Entities\Props</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerControler.cpp">
+      <Filter>Quelldateien\Entities\Props\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GL_Screen.h">
@@ -239,5 +245,24 @@
     <ClInclude Include="World.h">
       <Filter>Quelldateien\World</Filter>
     </ClInclude>
+    <ClInclude Include="PropDynamic.h">
+      <Filter>Quelldateien\Entities\Props</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerControler.h">
+      <Filter>Quelldateien\Entities\Props\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FoxelEngine.rc">
+      <Filter>Ressourcendateien</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Foxel Content\Icon\icon.ico">
+      <Filter>Ressourcendateien</Filter>
+    </None>
   </ItemGroup>
 </Project>
