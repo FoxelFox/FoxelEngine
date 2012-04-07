@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Quelldateien\Engine">
+      <UniqueIdentifier>{bc25ca63-ccca-4bbd-a9ed-49873fb101a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Entities">
+      <UniqueIdentifier>{5699c627-84a9-4358-b45b-d79d369bfa07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Forms">
+      <UniqueIdentifier>{f1e90cb5-9f85-41f4-91e2-21d2c911e7c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Map Editor">
+      <UniqueIdentifier>{c3b7e7ea-28e7-4b58-bbab-e6819952c8a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Math">
+      <UniqueIdentifier>{dc4fb4ff-a526-4183-ba03-05654cda28d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\World">
+      <UniqueIdentifier>{a7effc61-41fa-4cb8-b2ed-565f5c3899ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Engine\Screen">
+      <UniqueIdentifier>{eba35840-516b-4a03-8b20-1d264c8596fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Engine\Config">
+      <UniqueIdentifier>{5e92bee1-9f0b-4ff4-9045-0d2c46ba64da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Engine\Event System">
+      <UniqueIdentifier>{b944588d-242e-4259-b22f-acc8e3d83309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Engine\Foxel">
+      <UniqueIdentifier>{95c86350-ad90-48ad-8f1e-ec088e6c6c1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Entities\Props">
+      <UniqueIdentifier>{0130f19d-850f-46f8-b979-ec7dfa952f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Entities\Props\Axes">
+      <UniqueIdentifier>{355b69cf-ca30-454b-8d5b-daadc8de5854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Entities\Props\Camera">
+      <UniqueIdentifier>{7bda0bbf-9c61-43af-a639-e110e2debbab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Entities\Props\Player">
+      <UniqueIdentifier>{9f2e9626-b8da-43c1-801e-4df3b8cae67e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Forms\Menu">
+      <UniqueIdentifier>{8984781b-f326-47c4-9da8-a4c20a060f8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Forms\Text">
+      <UniqueIdentifier>{ac1ce20a-f71e-426b-b0bf-7eae3926a16e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Math\Datatypes">
+      <UniqueIdentifier>{ff1bf372-8df0-476d-88f4-275e8f899e1e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GL_Screen.cpp">
+      <Filter>Quelldateien\Engine\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Quelldateien\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core_events.cpp">
+      <Filter>Quelldateien\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core_inputs.cpp">
+      <Filter>Quelldateien\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Foxel.cpp">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClCompile>
+    <ClCompile Include="FoxelManager.cpp">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Quelldateien\Engine\Event System</Filter>
+    </ClCompile>
+    <ClCompile Include="Foxel_Interaction.cpp">
+      <Filter>Quelldateien\Engine\Event System</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Quelldateien\Engine\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent.cpp">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawableGameComponent.cpp">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity_2D.cpp">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Axes.cpp">
+      <Filter>Quelldateien\Entities\Props\Axes</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Quelldateien\Entities\Props\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Quelldateien\Entities\Props\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Main_Menu.cpp">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="TextButton.cpp">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMenu.cpp">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="TextField.cpp">
+      <Filter>Quelldateien\Forms\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapText.cpp">
+      <Filter>Quelldateien\Forms\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolBox.cpp">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="View.cpp">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Convert.cpp">
+      <Filter>Quelldateien\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2d.cpp">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3.cpp">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3d.cpp">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Quelldateien\World</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GL_Screen.h">
+      <Filter>Quelldateien\Engine\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Quelldateien\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Foxel.h">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClInclude>
+    <ClInclude Include="FoxelManager.h">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Quelldateien\Engine\Event System</Filter>
+    </ClInclude>
+    <ClInclude Include="Foxel_Interaction.h">
+      <Filter>Quelldateien\Engine\Event System</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Quelldateien\Engine\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent.h">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawableGameComponent.h">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity_2D.h">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Axes.h">
+      <Filter>Quelldateien\Entities\Props\Axes</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Quelldateien\Entities\Props\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Quelldateien\Entities\Props\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Main_Menu.h">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="TextButton.h">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenu.h">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapText.h">
+      <Filter>Quelldateien\Forms\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="TextField.h">
+      <Filter>Quelldateien\Forms\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolBox.h">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="View.h">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Convert.h">
+      <Filter>Quelldateien\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2d.h">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3.h">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3d.h">
+      <Filter>Quelldateien\Math\Datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Quelldateien\World</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
