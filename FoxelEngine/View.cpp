@@ -10,8 +10,8 @@ int lines = 0; // debug
 View::View(char viewMode, Vec2 position, Vec2 size) : Entity_2D(position, size){
 	this->viewMode = viewMode;
 	if(viewMode == VIEW_3D) ePlayer = new Player(PLAYER_EDIT);
-	zoom = 1;
-	gridDeep = 16;
+	zoom = 4;
+	gridDeep = 8;
 }
 
 View::~View(void){
@@ -103,30 +103,32 @@ void View::drawGrid(){
 	glTranslatef(-viewPosition.x,-viewPosition.y,0);
 	glBegin(GL_LINES);
 	// vertical lines
-	int rasterXR = (int)viewPosition.x + size.x/2 - ((int)size.x/2 % gridDeep);
-	int rasterXL = (int)viewPosition.x - size.x/2 + ((int)size.x/2 % gridDeep);
+	int rasterXR = ((int)viewPosition.x + size.x/(2*zoom));
+	int rasterXL = ((int)viewPosition.x - size.x/(2*zoom));
+	int rasterYU = ((int)viewPosition.y + size.y/(2*zoom));
+	int rasterYD = ((int)viewPosition.y - size.y/(2*zoom));
+	rasterYD -= rasterYD % gridDeep;
+	rasterXL -= rasterXL % gridDeep;
 	for(int x = rasterXL; x <= rasterXR; x += gridDeep){
-		if(x == 0){
+		if(x % 128 == 0){
 			glColor3f(0.3,0.1,0.1);
 		}else{
 			glColor3f(0.2,0.2,0.2);
 		}
-		glVertex3f(x,( size.y/2) / zoom, 0);
-		glVertex3f(x,(-size.y/2) / zoom, 0);
+		glVertex3f(x,( size.y/(2*zoom)+viewPosition.y), 0);
+		glVertex3f(x,(-size.y/(2*zoom)+viewPosition.y), 0);
 		lines++;		// debug
 	}
 	// horizontal lines
 	
-	int rasterYR = ((viewPosition.y + size.y/2) - (int)(viewPosition.y + size.y/2) % gridDeep);
-	int rasterYL = viewPosition.y - size.y/2 - (int)(viewPosition.y + size.y/2) % gridDeep;
-	for(int y = rasterYL; y <= rasterYR; y += gridDeep){
-		if(y == 0){
+	for(int y = rasterYD; y <= rasterYU; y += gridDeep){
+		if(y % 128 == 0){
 			glColor3f(0.3,0.1,0.1);
 		}else{
 			glColor3f(0.2,0.2,0.2);
 		}
-		glVertex3f(( size.x/2) / zoom, y, 0);
-		glVertex3f((-size.x/2) / zoom, y, 0);
+		glVertex3f(( size.x/(2*zoom)+viewPosition.x), y, 0);
+		glVertex3f((-size.x/(2*zoom)+viewPosition.x), y, 0);
 	}
 	glEnd();
 	glTranslatef(viewPosition.x,viewPosition.y,0);
