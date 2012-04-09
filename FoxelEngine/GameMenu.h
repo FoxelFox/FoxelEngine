@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "GL_Screen.h"
+#include "Screen.h"
 #include "TextButton.h"
 #include "Entity_2D.h"
 class GameMenu : public Entity_2D{

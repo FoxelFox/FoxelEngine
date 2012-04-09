@@ -3,19 +3,26 @@
 #include "View.h"
 #include "GameMenu.h"
 #include "ToolBox.h"
+#include "Controler.h"
 
+namespace MapEditor{
+	class Editor : public GameMenu{
+	private:
+		ToolBox* toolBox;
+		Controler* controler;
+		std::vector<View*> views;
+		View* catchActiveView();
+		bool playMode;
 
-class Editor : public GameMenu{
-	float b;			// Border
-	ToolBox* toolBox;
-	std::vector<MapEditor::View*> views;
-
-public:
-	void draw();
-	void catchMousePosition(Vec2 pos);
-	void catchMouseClick(Vec2 pos);
-    void resize();
-	Editor(void);
-	~Editor(void);
-};
-
+	public:
+		void draw();
+		void update(float* time);
+		void catchMouseClick(Vec2 pos);
+		void catchKeyDown(SDLKey sym);
+		void catchKeyUp(SDLKey sym);
+		void resize();
+		MapEditor::Controler* getControler();
+		Editor(void);
+		~Editor(void);
+	};
+}

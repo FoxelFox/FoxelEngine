@@ -8,6 +8,8 @@
 #include "Convert.h"
 #include "Foxel_Interaction.h"
 
+enum PlayerTyp { PLAYER_NORMAL = 1, PLAYER_EDIT = 2, PLAYER_FOX = 1337};
+
 class Player : public PropDynamic{
 private:
 	Camera* camera;
@@ -16,11 +18,19 @@ private:
 	// propertys
 	float maxMoveSpeed;
 	float accelerateValue;
+	int playerTyp;
+
+	short health;
+	short armor;
+
+	bool noclip;
+
 
 	void createEvents();
 public:
-	Player(void);
+	Player(int typ);
 	Player(Vec3d position);
+	void setTyp(int typ);
 	void catchKeyDown(SDLKey sym);
 	void catchKeyUp(SDLKey sym);
 	void catchMouseMotion(float x, float y);

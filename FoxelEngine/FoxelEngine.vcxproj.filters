@@ -64,13 +64,13 @@
     <Filter Include="Quelldateien\Math\Datatypes">
       <UniqueIdentifier>{ff1bf372-8df0-476d-88f4-275e8f899e1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Map Editor\Controler">
+      <UniqueIdentifier>{5f1b4481-29d3-43f6-9ebc-1bed72882b08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="GL_Screen.cpp">
-      <Filter>Quelldateien\Engine\Screen</Filter>
     </ClCompile>
     <ClCompile Include="Core.cpp">
       <Filter>Quelldateien\Engine</Filter>
@@ -162,11 +162,14 @@
     <ClCompile Include="PlayerControler.cpp">
       <Filter>Quelldateien\Entities\Props\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Controler.cpp">
+      <Filter>Quelldateien\Map Editor\Controler</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>Quelldateien\Engine\Screen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GL_Screen.h">
-      <Filter>Quelldateien\Engine\Screen</Filter>
-    </ClInclude>
     <ClInclude Include="Core.h">
       <Filter>Quelldateien\Engine</Filter>
     </ClInclude>
@@ -253,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="resource1.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Controler.h">
+      <Filter>Quelldateien\Map Editor\Controler</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>Quelldateien\Engine\Screen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

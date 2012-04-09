@@ -1,12 +1,22 @@
 #include "Player.h"
 
-Player::Player(void) : PropDynamic(){
+Player::Player(int typ) : PropDynamic(){
+	playerTyp = typ;
+	switch(playerTyp){
+	case PLAYER_NORMAL: health = 100; armor = 0;   noclip = false;
+	                    rotation.x = 270; rotation.z = 0;
+	case PLAYER_EDIT:   health = 100; armor = 100; noclip = true;
+                        rotation.x = 335; rotation.z = -45;
+						position.x = 4; position.y = -10; position.z = 3;
+	case PLAYER_FOX:	health = 100; armor = 0;   noclip = true;
+	                    rotation.x = 270; rotation.z = 0;
+	}
+
 	maxMoveSpeed = 0.025f;
 	accelerateValue = 0.0001f;
 	camera = new Camera();
-	controler = new PlayerControler();
-	rotation.x = 270;
-	rotation.z = 0;
+	camera->setRotation(rotation);
+	controler = new PlayerControler(playerTyp);
 }
 
 Player::Player(Vec3d position)
@@ -43,13 +53,13 @@ void Player::update(float* time){
 		float speed = accelerateValue **time ;
 		velocity.x -= speed * sin(-Convert::degToRad(&rotation.z))*sin(Convert::degToRad(&rotation.x));
 		velocity.y += speed * cos(-Convert::degToRad(&rotation.z))*sin(Convert::degToRad(&rotation.x));
-		velocity.z += speed * cos(Convert::degToRad(&rotation.x));
+		if(noclip) velocity.z += speed * cos(Convert::degToRad(&rotation.x));
 	}
 	if(controler->forward){
 		float speed = accelerateValue **time ;
 		velocity.x += speed * sin(-Convert::degToRad(&rotation.z))*sin(Convert::degToRad(&rotation.x));
 		velocity.y -= speed * cos(-Convert::degToRad(&rotation.z))*sin(Convert::degToRad(&rotation.x));
-		velocity.z -= speed * cos(Convert::degToRad(&rotation.x));
+		if(noclip) velocity.z -= speed * cos(Convert::degToRad(&rotation.x));
 	}
 	if(controler->right){
 		float speed = accelerateValue **time ;
@@ -74,9 +84,14 @@ void Player::render(){
 }
 
 void Player::createEvents(){
-	if(controler->setFoxel){
+	
+	if(playerTyp != PLAYER_EDIT && controler->setFoxel){
 		new Event::setFoxel(&position, 1);
 	}
+}
+
+void Player::setTyp(int typ){
+	playerTyp = typ;
 }
 
 Player::~Player(void){

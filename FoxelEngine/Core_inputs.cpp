@@ -6,7 +6,7 @@ void Core::inputs(){
 	/* Schau nach, ob Events anliegen */
 	while ((!done) && SDL_PollEvent (sdlEvent)){  /* Solange noch Events vorhanden sind */
 		
-		specialEvents(&done);
+		specialInputs(&done);
 		switch(userState){
 			case ON_GAME:		inputOnGame();
 								done = true; break;
@@ -23,14 +23,20 @@ void Core::inputs(){
 	}			
 }
 
-void Core::specialEvents(bool* done){
+void Core::specialInputs(bool* done){
 	switch (sdlEvent->type){
 		case SDL_QUIT:
 			exit (0);
 			break;
 
+		case SDL_MOUSEMOTION:
+			screen->catchMousePosition(Vec2(sdlEvent->motion.x, sdlEvent->motion.y));
+			screen->catchMouseMotion(Vec2(sdlEvent->motion.xrel, sdlEvent->motion.yrel));
+			break;
+
 		case SDL_VIDEORESIZE:	
 			screen->resize(sdlEvent->resize.w,sdlEvent->resize.h);
+            if(userState == ON_EDIT){    editor->resize();}
 			*done = true;
 			break;
 	}
@@ -42,8 +48,7 @@ void Core::inputOnGame(){
 		switch(sdlEvent->key.keysym.sym){
 			case SDLK_ESCAPE:
 				userState = ON_GAME_PAUSE;
-				SDL_ShowCursor (SDL_ENABLE);
-				SDL_WM_GrabInput (SDL_GRAB_OFF);
+				screen->showMouse();
 				break;
 		}
 		player->catchKeyDown(sdlEvent->key.keysym.sym);
@@ -86,27 +91,26 @@ switch (sdlEvent->type){
 		break;
 	}
 }
-
 void Core::inputOnEdit(){
 switch (sdlEvent->type){
 	case SDL_KEYDOWN:  /* Tastaturevent */
 		switch(sdlEvent->key.keysym.sym){
 			case SDLK_ESCAPE: userState = ON_MAIN_MENU;
 		}
+		editor->catchKeyDown(sdlEvent->key.keysym.sym);
 		break;
 
-	case SDL_KEYUP:		
-		break;
-
-	case SDL_MOUSEMOTION:
-		editor->catchMousePosition(Vec2(sdlEvent->motion.x, sdlEvent->motion.y));
+	case SDL_KEYUP:
+		editor->catchKeyUp(sdlEvent->key.keysym.sym);
 		break;
 
 	case SDL_MOUSEBUTTONDOWN:
-		switch(sdlEvent->button.button){
-			case SDL_BUTTON_LEFT:
-				editor->catchMouseClick(Vec2(sdlEvent->motion.x,sdlEvent->motion.y));
-		}
+		editor->getControler()->catchMouseClick(sdlEvent->button.button);
+		break;
+	case SDL_MOUSEBUTTONUP:
+		editor->getControler()->catchMouseRelease(sdlEvent->button.button);
+		break;
+
 	default: /* unbeachteter Event */
 		break;
 	}

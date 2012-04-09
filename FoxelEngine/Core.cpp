@@ -19,7 +19,7 @@ bool Core::init(int argc, char *argv[]){
 		getchar();
 		return false;
 	}else{
-		screen = new GL_Screen(config->getScreenW(),config->getScreenH(), config->isFullscreen());
+		screen = new Screen(config->getScreenW(),config->getScreenH(), config->isFullscreen());
 		// GLEW INIT
 		GLenum err = glewInit();
 		glutInit(&argc,argv);
@@ -39,50 +39,50 @@ bool Core::init(int argc, char *argv[]){
 void Core::startGame(){
 	userState = ON_GAME;
 	world = new World();
-	player = new Player();
-	SDL_ShowCursor (SDL_DISABLE);
-	SDL_WM_GrabInput (SDL_GRAB_ON);
+	delete player;
+	player = new Player(PLAYER_NORMAL);
+	player->setTyp(PLAYER_FOX);				// debug
+	screen->hideMouse();
 }
 
 void Core::startEditor(){
 	userState = ON_EDIT;
 	delete world, player;
-	editor = new Editor();
+	editor = new MapEditor::Editor();
 }
 
 void Core::update(float* time){
-	if(userState == ON_GAME || userState == ON_GAME_PAUSE){
-		player->update(time);
-	}
-	if(userState == ON_EDIT){
-		
-	}
+	switch(userState){
+    case ON_GAME:       player->update(time); break;
+    case ON_GAME_PAUSE: player->update(time); break;
+    case ON_MAIN_MENU:                        break;
+    case ON_EDIT:       editor->update(time); break;
+    }
 }
 
 void Core::render(){
-	
+	screen->reset();
 	switch(userState){
 		//========================================#
-		case ON_GAME:			screen->load3DView();
-								player->render();
-								world->render();  
-								axes->render();
-								break;							
+		case ON_GAME:           screen->load3DView();
+                                player->render();
+                                world->render();  
+                                axes->render();
+                                break;							
 		//========================================#
-		case ON_MAIN_MENU:		screen->load3DView();
-								mainMenu->draw();
-								break;
+		case ON_MAIN_MENU:      screen->load3DView();
+                                mainMenu->draw();
+                                break;
 							
 		//========================================#
-		case ON_GAME_PAUSE:		screen->load3DView();
-								mainMenu->draw();
+		case ON_GAME_PAUSE:     screen->load3DView();
+                                mainMenu->draw();
 								
-								break;
+                                break;
 							
 		//========================================#
-		case ON_EDIT:			
-								editor->draw();
-								break;
+		case ON_EDIT:           editor->draw();
+                                break;
 		//========================================#
 	}
 	SDL_GL_SwapBuffers();

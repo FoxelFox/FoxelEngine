@@ -1,5 +1,5 @@
 #pragma once
-#include "GL_Screen.h"
+#include "Screen.h"
 #include "gamemenu.h"
 #include "Event.h"
 class Main_Menu : public GameMenu{

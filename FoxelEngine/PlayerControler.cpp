@@ -1,8 +1,8 @@
 #include "PlayerControler.h"
 
 
-PlayerControler::PlayerControler(void)
-{
+PlayerControler::PlayerControler(int controleMode){
+	this->controleMode = controleMode;
 	left = right = false;
 	forward = backward = false;
 	sprint = false;

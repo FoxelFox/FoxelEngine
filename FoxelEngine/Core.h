@@ -2,7 +2,7 @@
 #include <iostream>// for Debug infos
 
 #include "Event.h"
-#include "GL_Screen.h"
+#include "Screen.h"
 #include "World.h"
 #include "Player.h"
 #include "Config.h"
@@ -16,13 +16,13 @@ class Core
 {
 private:
 	Config* config;
-	GL_Screen* screen;
+	Screen* screen;
 	SDL_Event* sdlEvent;
 	World* world;
 	Player* player;
 	Axes* axes;
 	Main_Menu* mainMenu;
-	Editor* editor;
+	MapEditor::Editor* editor;
 
 	int userState;
 
@@ -31,7 +31,7 @@ private:
 	void inputOnGame();
 	void inputOnMenu();
 	void inputOnEdit();
-	void specialEvents(bool* done);
+	void specialInputs(bool* done);
 
 public:
 	bool running;

@@ -130,6 +130,7 @@
     <ClCompile Include="BitmapText.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="Controler.cpp" />
     <ClCompile Include="Convert.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Core_events.cpp" />
@@ -143,7 +144,7 @@
     <ClCompile Include="Foxel_Interaction.cpp" />
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameMenu.cpp" />
-    <ClCompile Include="GL_Screen.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Menu.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="BitmapText.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Controler.h" />
     <ClInclude Include="Convert.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DrawableGameComponent.h" />
@@ -175,7 +177,7 @@
     <ClInclude Include="Foxel_Interaction.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameMenu.h" />
-    <ClInclude Include="GL_Screen.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="Main_Menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControler.h" />

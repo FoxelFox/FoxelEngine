@@ -20,7 +20,7 @@ void Main_Menu::draw(){
 	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-    glOrtho(0, GL_Screen::getWidth(), 0, GL_Screen::getHeight(), -128, 128);
+    glOrtho(0, Screen::getWidth(), 0, Screen::getHeight(), -128, 128);
    
 	glColor3f(0.1f,0.1f,0.1f);
 	glBegin(GL_QUADS);
