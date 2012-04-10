@@ -55,7 +55,7 @@ void Screen::resize(int w, int h){
 
 	SDL_UpdateRect(0,0,0,0,0);
 
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 	glViewport(0, 0, screenWidth, screenHeight);
 	glMatrixMode(GL_PROJECTION);
 	glEnable(GL_TEXTURE_2D);

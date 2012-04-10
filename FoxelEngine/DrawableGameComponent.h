@@ -9,7 +9,6 @@ protected:
 
 public:
 	DrawableGameComponent(void);
-	virtual void render();
 	~DrawableGameComponent(void);
 };
 

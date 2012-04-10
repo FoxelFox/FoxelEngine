@@ -2,7 +2,7 @@
 
 
 World::World(void){
-	foxelManager = new FoxelManager();
+	//foxelManager = new FoxelManager();
 }
 
 void World::init(){
@@ -10,9 +10,9 @@ void World::init(){
 }
 
 void World::render(){
-	foxelManager->render();
+	FoxelManager::render();
 }
 
 World::~World(void){
-	foxelManager->deleteAll();
+	FoxelManager::deleteAll();
 }

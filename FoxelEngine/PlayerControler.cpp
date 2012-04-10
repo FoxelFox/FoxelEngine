@@ -1,5 +1,5 @@
 #include "PlayerControler.h"
-
+#include "Player.h"
 
 PlayerControler::PlayerControler(int controleMode){
 	this->controleMode = controleMode;
@@ -17,6 +17,7 @@ void PlayerControler::getKeyDown(SDLKey sym){
 		case SDLK_s: backward = true; break;
 		case SDLK_LSHIFT: sprint = true; break;
 		case SDLK_e: setFoxel = true; break;
+		case SDLK_F1: if(controleMode == PLAYER_FOX) new Event::BasicEvent(Event::SWITCH_DEBUG);
 	}
 }
 

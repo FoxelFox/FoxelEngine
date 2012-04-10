@@ -3,7 +3,7 @@
 
 namespace Event{
 
-	enum EventID{ SET_FOXEL = 128, EXIT = 0, PLAYMODE  = 1, EDITMODE = 2};
+	enum EventID{ SET_FOXEL = 128, EXIT = 0, PLAYMODE  = 1, EDITMODE = 2, SWITCH_DEBUG = 3};
 
 	static int nextEvent;
 	static int waitingEvents;

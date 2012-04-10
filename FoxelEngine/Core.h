@@ -9,6 +9,7 @@
 #include "Axes.h"
 #include "Main_Menu.h"
 #include "Editor.h"
+#include "GlobalLight.h"
 
 enum{ON_MAIN_MENU = 0, ON_GAME = 1, ON_EDIT = 2, ON_GAME_PAUSE = 3};
 

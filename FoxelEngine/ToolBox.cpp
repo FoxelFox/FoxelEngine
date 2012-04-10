@@ -3,8 +3,8 @@
 using namespace MapEditor;
 ToolBox::ToolBox(Vec2 position, Vec2 size) : GameMenu(position, size){ 
     int y = 28;     
-    selectOptions.push_back(TextButton(Vec2(16,Screen::getHeight()-y),Vec2(96,14),"Brush"));  y += 28;
-    selectOptions.push_back(TextButton(Vec2(16,Screen::getHeight()-y),Vec2(96,14),"Entity")); y += 28;
+    selectOptions.push_back(TextButton(Vec2(16,(float)Screen::getHeight()-y),Vec2(96,14),"Brush"));  y += 28;
+    selectOptions.push_back(TextButton(Vec2(16,(float)Screen::getHeight()-y),Vec2(96,14),"Entity")); y += 28;
 
 }
 
@@ -24,10 +24,10 @@ void ToolBox::draw(){
 }
 
 void ToolBox::resize(){
-    size.y = Screen::getHeight();
+    size.y = (float)Screen::getHeight();
     int y = 28;
     for(int i = 0; i < selectOptions.size(); i++){ 
-        selectOptions[i].setPosition(Vec2(16,Screen::getHeight() - y));
+        selectOptions[i].setPosition(Vec2(16,(float)Screen::getHeight() - y));
         y += 28;
     }
 }

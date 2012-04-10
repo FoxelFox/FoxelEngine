@@ -4,7 +4,6 @@ class PlayerControler{
 friend class Player;
 private:
 	int controleMode;
-
 	bool left, right;
 	bool forward, backward;
 	bool sprint;

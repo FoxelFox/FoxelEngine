@@ -67,6 +67,12 @@
     <Filter Include="Quelldateien\Map Editor\Controler">
       <UniqueIdentifier>{5f1b4481-29d3-43f6-9ebc-1bed72882b08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Engine\Lighting">
+      <UniqueIdentifier>{17699c1c-a615-4db1-8749-3ba95911687b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Engine\Shader">
+      <UniqueIdentifier>{f60e47a3-fcff-4a44-b755-71d1fd646b1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -168,6 +174,12 @@
     <ClCompile Include="Screen.cpp">
       <Filter>Quelldateien\Engine\Screen</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalLight.cpp">
+      <Filter>Quelldateien\Engine\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Quelldateien\Engine\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -262,6 +274,12 @@
     </ClInclude>
     <ClInclude Include="Screen.h">
       <Filter>Quelldateien\Engine\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalLight.h">
+      <Filter>Quelldateien\Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Quelldateien\Engine\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

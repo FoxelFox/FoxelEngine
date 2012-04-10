@@ -1,4 +1,5 @@
 #include "View.h"
+#include "GlobalLight.h"
 #include <GL\freeglut.h>
 #include <math.h>
 #include <iostream>
@@ -28,6 +29,9 @@ void View::setUp(){
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	
+
 	const float xMin = -size.x/2+1;
 	const float xMax =  size.x/2;
 	const float yMin = -size.y/2+1;
@@ -49,9 +53,12 @@ void View::setUp(){
 		glVertex3f(xMax,yMin, -127.5);
 	glEnd();
 
+	GlobalLight::lightAt(Vec3(0,0,128));
 	glScalef(zoom,zoom,zoom);
-	if(viewMode > 0) drawGrid();
-
+	
+	if(viewMode > 0){
+		drawGrid();
+	}
 	
 
 	switch(viewMode){
@@ -83,8 +90,10 @@ void View::setUp(){
 		glFrustum(-ar, ar, -1.0, 1.0, 2.0, 16000.0);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+		GlobalLight::lightAt(Vec3(0,0,0));
 		ePlayer->render();
 	}
+	axes.render();
 }
 
 void View::update(float* time){
@@ -92,43 +101,44 @@ void View::update(float* time){
 }
 
 void View::draw(){
-	glColor3f(0.5,0.5,0.5);
-	axes.render();
-	glutSolidTeapot(1);
+	glColor3f(0.5f,0.5f,0.5f);
+	glutSolidTeapot(-1);
+	glTranslatef(8,8,0);
+	glutSolidCube(1);
 }
 
 void View::drawGrid(){
-	glColor3f(0.2,0.2,0.2);
+	glColor3f(0.2f,0.2f,0.2f);
 	lines = 0;
 	glTranslatef(-viewPosition.x,-viewPosition.y,0);
 	glBegin(GL_LINES);
 	// vertical lines
-	int rasterXR = ((int)viewPosition.x + size.x/(2*zoom));
-	int rasterXL = ((int)viewPosition.x - size.x/(2*zoom));
-	int rasterYU = ((int)viewPosition.y + size.y/(2*zoom));
-	int rasterYD = ((int)viewPosition.y - size.y/(2*zoom));
+	int rasterXR = (int)(viewPosition.x + size.x/(2*zoom));
+	int rasterXL = (int)(viewPosition.x - size.x/(2*zoom));
+	int rasterYU = (int)(viewPosition.y + size.y/(2*zoom));
+	int rasterYD = (int)(viewPosition.y - size.y/(2*zoom));
 	rasterYD -= rasterYD % gridDeep;
 	rasterXL -= rasterXL % gridDeep;
 	for(int x = rasterXL; x <= rasterXR; x += gridDeep){
 		if(x % 128 == 0){
-			glColor3f(0.3,0.1,0.1);
+			glColor3f(0.3f,0.1f,0.1f);
 		}else{
-			glColor3f(0.2,0.2,0.2);
+			glColor3f(0.2f,0.2f,0.2f);
 		}
-		glVertex3f(x,( size.y/(2*zoom)+viewPosition.y), 0);
-		glVertex3f(x,(-size.y/(2*zoom)+viewPosition.y), 0);
+		glVertex3i(x,(int)( size.y/(2*zoom)+viewPosition.y), 0);
+		glVertex3i(x,(int)(-size.y/(2*zoom)+viewPosition.y), 0);
 		lines++;		// debug
 	}
 	// horizontal lines
 	
 	for(int y = rasterYD; y <= rasterYU; y += gridDeep){
 		if(y % 128 == 0){
-			glColor3f(0.3,0.1,0.1);
+			glColor3f(0.3f,0.1f,0.1f);
 		}else{
-			glColor3f(0.2,0.2,0.2);
+			glColor3f(0.2f,0.2f,0.2f);
 		}
-		glVertex3f(( size.x/(2*zoom)+viewPosition.x), y, 0);
-		glVertex3f((-size.x/(2*zoom)+viewPosition.x), y, 0);
+		glVertex3i((int)( size.x/(2*zoom)+viewPosition.x), y, 0);
+		glVertex3i((int)(-size.x/(2*zoom)+viewPosition.x), y, 0);
 	}
 	glEnd();
 	glTranslatef(viewPosition.x,viewPosition.y,0);

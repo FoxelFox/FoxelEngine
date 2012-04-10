@@ -31,6 +31,7 @@ static char renderMode;
 static unsigned long vertexCount;
 static unsigned long polyCount;
 static const int BITSIZE = 128;
+static bool debug = false;
 
 static GLfloat debugChunkBoxV[] = {0.0f ,  0.0f ,  0.0f ,
 								  128.0f,  0.0f ,  0.0f ,
@@ -50,6 +51,7 @@ class FoxelManager : public DrawableGameComponent
 	std::bitset<BITSIZE> bitGrid[BITSIZE][BITSIZE];
 	GLint* vertices;
 	GLuint vbo;
+	GLuint vao;
 	Foxel* foxel;
 	unsigned int anzFoxel;
 	unsigned short lod;			// level of detail
@@ -61,12 +63,13 @@ class FoxelManager : public DrawableGameComponent
 public:
 	FoxelManager(void);
 	~FoxelManager(void);
-	void deleteAll();
+	static void deleteAll();
 	void setupFoxels();
 	void settingFoxel(Event::setFoxel* setterEvent);
 	long getPolyCount();
 	long getVertexCount();
-	void render();
+	static void render();
+	static void switchDebug();
 
 private:
 	FoxelManager(int x, int y, int z);

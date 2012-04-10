@@ -278,7 +278,10 @@ void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, 
 	===========================================
 */
 void FoxelManager::packVertices(std::vector<GLint> *v_Vertex){
-	glDeleteBuffers(1,&vbo);
+	if(vertexCount > 0){
+		glDeleteBuffers(1,&vbo);
+		glDeleteVertexArrays(1,&vbo);
+	}
 	delete[] vertices;
 	vertexCount -= (long) anzVertex;
 	polyCount -= (long) anzPolygon;
@@ -291,9 +294,16 @@ void FoxelManager::packVertices(std::vector<GLint> *v_Vertex){
 	}
 	// Creating Buffer and uploading data
 	if(anzVertex > 0){
-		glGenBuffers(1, &vbo);
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		glGenBuffers(1,&vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLint)*v_Vertex->size(), vertices, GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0,3,GL_INT,GL_FALSE,0,0);
+		glEnableVertexAttribArray(0);
+
 	}
 }
 /*
@@ -308,11 +318,11 @@ void FoxelManager::render(){
 	//glPointParameterf(GL_POINT_SIZE_MAX, 2048.0f);
 	//glPointParameterfv(GL_POINT_DISTANCE_ATTENUATION,pointParameter);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	
 	for(unsigned int i = 0; i < chunks.size(); i++){
 		chunks.at(i)->drawChunk();
 	}
-	glDisableClientState(GL_VERTEX_ARRAY);
+	
 }
 /*
 	====================================
@@ -324,21 +334,20 @@ void FoxelManager::drawChunk(){
 
 	if(anzVertex > 0){
 		// draw Foxel
-		glColor4f(0.125f, 1.0f, 0.005f, 0.5f);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexPointer(3, GL_INT, 0, 0);
-
+		glColor4f(1.0f, 0.125f, 0.005f, 0.5f);
+		glBindVertexArray(vao);
+		glVertexAttrib3f((GLuint)1, 0.0, 0.0, 1.0);
 		glDrawArrays(GL_QUADS, 0, anzVertex);
-		glBindBuffer(GL_ARRAY_BUFFER, NULL);
+		glBindVertexArray(0);
 		
 		
 	}
 	// draw a debugBox
-	glColor3f(1.0f,1.0f,1.0f);
-	glVertexPointer(3,GL_FLOAT,0,debugChunkBoxV);
-	glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, debugChunkBoxI);
-
+	if(debug){
+		glColor3f(1.0f,1.0f,1.0f);
+		glVertexPointer(3,GL_FLOAT,0,debugChunkBoxV);
+		glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, debugChunkBoxI);
+	}
 	glTranslatef((float)-position.x,(float)-position.y,(float)-position.z);
 }
 
@@ -378,6 +387,11 @@ void FoxelManager::settingFoxel(Event::setFoxel* setterEvent){
 		idMap[chunkID]->setupFoxels();
 		std::cout << "Chunks: " << chunks.size() << "   Total Vertices:  " << vertexCount << std::endl;
 	}
+}
+
+void FoxelManager::switchDebug(){
+	if(debug) debug = false;
+	else debug = true;
 }
 
 long FoxelManager::getPolyCount(){

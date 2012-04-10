@@ -84,7 +84,7 @@ void Player::render(){
 }
 
 void Player::createEvents(){
-	
+
 	if(playerTyp != PLAYER_EDIT && controler->setFoxel){
 		new Event::setFoxel(&position, 1);
 	}
@@ -92,6 +92,7 @@ void Player::createEvents(){
 
 void Player::setTyp(int typ){
 	playerTyp = typ;
+	controler->controleMode = typ;
 }
 
 Player::~Player(void){

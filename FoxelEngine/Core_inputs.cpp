@@ -96,6 +96,7 @@ switch (sdlEvent->type){
 	case SDL_KEYDOWN:  /* Tastaturevent */
 		switch(sdlEvent->key.keysym.sym){
 			case SDLK_ESCAPE: userState = ON_MAIN_MENU;
+				screen->showMouse();
 		}
 		editor->catchKeyDown(sdlEvent->key.keysym.sym);
 		break;

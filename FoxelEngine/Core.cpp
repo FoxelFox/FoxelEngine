@@ -1,5 +1,8 @@
 #include "Core.h"
 #include <iostream>
+#include <fstream>
+
+using namespace std;
 
 Core::Core(){
 	running = false;
@@ -27,10 +30,17 @@ bool Core::init(int argc, char *argv[]){
 			std::cout << "Error: " << glewGetErrorString(err)
 			<< std::endl;
 		}
-		std::cout << "Using GLEW " << glewGetString(GLEW_VERSION) << "\n\n";
+		cout << "Using GLEW " << glewGetString(GLEW_VERSION) << "\n\n";
+
+		// extensions
+		fstream f;
+		f.open("Extensions.log", ios::out);
+		f << glGetString(GL_EXTENSIONS) << endl;
+		f.close();
 
         mainMenu = new Main_Menu();
 		Event::BasicEvent::initEventSystem();
+		GlobalLight::load();
 		running = true;
 		return true;
 	}
@@ -65,9 +75,10 @@ void Core::render(){
 	switch(userState){
 		//========================================#
 		case ON_GAME:           screen->load3DView();
-                                player->render();
-                                world->render();  
-                                axes->render();
+								GlobalLight::lightAt(Vec3(0,0,0));
+								player->render();
+                                world->render();
+								axes->render();
                                 break;							
 		//========================================#
 		case ON_MAIN_MENU:      screen->load3DView();
@@ -76,8 +87,10 @@ void Core::render(){
 							
 		//========================================#
 		case ON_GAME_PAUSE:     screen->load3DView();
+								GlobalLight::lightAt(Vec3(0,0,0));
+								player->render();
+								world->render();  
                                 mainMenu->draw();
-								
                                 break;
 							
 		//========================================#

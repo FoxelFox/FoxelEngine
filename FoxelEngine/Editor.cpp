@@ -1,4 +1,5 @@
 #include "Editor.h"
+#include "GlobalLight.h"
 #include <SDL\SDL.h>
 
 using namespace MapEditor;
@@ -27,7 +28,9 @@ void Editor::draw(){
 	for(int i = 0; i < 4; i++){
 		views[i]->setUp();
 		glDisable(GL_BLEND);
+		GlobalLight::turnOn();
 		views[i]->draw();
+		GlobalLight::turnOff();
 		glEnable(GL_BLEND);
 	}
 }
@@ -56,15 +59,15 @@ void Editor::update(float* time){
 		try{
 			catchActiveView()->moveViewPosition(Vec3(Screen::getMouseMotion().x, Screen::getMouseMotion().y,0));
 		}catch(int noView){
-			// Mouse isnt on a view
+			noView = 0;// Mouse isnt on a view
 		}
 	}
 
 	if(controler->wheelState != 0){
 		try{
-			catchActiveView()->addZoomValue(controler->wheelState);
+			catchActiveView()->addZoomValue((float)controler->wheelState);
 		}catch(int noView){
-			// Mouse isnt on a view
+			noView = 0;// Mouse isnt on a view
 		}
 		controler->wheelState = 0;
 	}
@@ -83,7 +86,7 @@ View* Editor::catchActiveView(){
 			return views[i];
 		}
 	}
-	throw -1;
+	throw NULL;
 }
 
 void Editor::resize(){
