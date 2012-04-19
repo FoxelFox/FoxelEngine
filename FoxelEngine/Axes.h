@@ -2,26 +2,24 @@
 #include <GL\glew.h>
 #include "drawablegamecomponent.h"
 
-const GLfloat lineVertices[] = {0,0,0,
-								8,0,0,
-								0,8,0,
-								0,0,8};
+static GLfloat AxeVertices[] = {0,0,0,
+                                8,0,0,
+                                0,8,0,
+                                0,0,8};
 
-const GLfloat color[]		=  {0,0,0,
-							    1,0,0,
-							    0,1,0,
-							    0,0,1};
+static GLfloat AxeColor[] = {0,0,0,
+                             1,0,0,
+                             0,1,0,
+                             0,0,1};
 
-const GLushort indices[] = {0,1,0,2,0,3};
+static GLuint AxeIndices[] = {0,1,0,2,0,3};
 
-class Axes :
-	public DrawableGameComponent
-{
+class Axes : public DrawableGameComponent{
 private:
-
+	//VertexPositionColor* vertices;
 public:
 	Axes(void);
-	void render();
 	~Axes(void);
+	void render();
 };
 

@@ -29,7 +29,6 @@ private:
 	void createEvents();
 public:
 	Player(int typ);
-	Player(Vec3d position);
 	void setTyp(int typ);
 	void catchKeyDown(SDLKey sym);
 	void catchKeyUp(SDLKey sym);

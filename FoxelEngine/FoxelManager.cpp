@@ -1,7 +1,8 @@
-#include <iostream>
 #include "FoxelManager.h"
 
-FoxelManager::FoxelManager(void) : DrawableGameComponent(){
+using namespace GLSL;
+
+FoxelManager::FoxelManager(void){
 	chunks.push_back(this);
 	myID.push_back(0);
 	myID.push_back(0);
@@ -20,6 +21,15 @@ FoxelManager::FoxelManager(void) : DrawableGameComponent(){
 	=============================================
  */
 FoxelManager::FoxelManager(int x, int y, int z){
+
+	// first chunk?
+	if(chunks.size() == 0){
+
+	}
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glGenBuffers(2,vbos); // vertices and Normals
+
 	position.x = (float) x * BITSIZE;
 	position.y = (float) y * BITSIZE;
 	position.z = (float) z * BITSIZE;
@@ -57,6 +67,7 @@ void FoxelManager::initialise(){
 	anzFoxel = 0;
 	anzVertex = 0;
 	vertices = NULL;
+	normals = NULL;
 	idMap[myID] = this;
 
 	myNeighborUp.push_back   (myID[0]  ); myNeighborUp.push_back   (myID[1]  );	myNeighborUp.push_back	 (myID[2]+1);
@@ -86,10 +97,11 @@ void FoxelManager::setupFoxels(){
 	delete[] foxel;
 	char visState = 0;
 	std::vector<Foxel> v_Foxel;
-	std::vector<GLint> v_Vertex;
+	std::vector<GLfloat> v_Vertex;
+	std::vector<GLfloat> v_Normal;
 	v_Foxel.reserve ((unsigned int)(anzFoxel  * 1.2));
 	v_Vertex.reserve((unsigned int)(anzVertex * 1.2));
-
+	v_Normal.reserve((unsigned int)(anzVertex * 1.2));
 	for(short x = 0; x < BITSIZE; x++){
 		for(short y = 0; y < BITSIZE; y++){
 			for(short z = 0; z < BITSIZE; z++){
@@ -158,9 +170,9 @@ void FoxelManager::setupFoxels(){
 					if(visState > 0){	// Foxel is visable
 						v_Foxel.push_back(Foxel(1,visState));
 						if(renderMode == POINT_MODE){
-							addPointVertices(x,y,z,visState,&v_Vertex);
+							addPointVertices((GLfloat)x,(GLfloat)y,(GLfloat)z,visState,&v_Vertex,&v_Normal);
 						}else{
-							addPolygonVertices(x,y,z,visState,&v_Vertex);
+							addPolygonVertices((GLfloat)x,(GLfloat)y,(GLfloat)z,visState,&v_Vertex,&v_Normal);
 						}
 						visState = 0;
 					}
@@ -168,7 +180,7 @@ void FoxelManager::setupFoxels(){
 			}
 		}
 	}
-	packVertices(&v_Vertex);
+	packVertices(&v_Vertex,&v_Normal);
 }
 /*
 	===============================================
@@ -176,10 +188,10 @@ void FoxelManager::setupFoxels(){
 	moment unused and better cast would be to float
 	===============================================
 */
-void FoxelManager::addPointVertices(GLint x, GLint y, GLint z, char visState, std::vector<GLint>* v_Vertex){
+void FoxelManager::addPointVertices(GLfloat x, GLfloat y, GLfloat z, char visState, std::vector<GLfloat>* v_Vertex,std::vector<GLfloat>* v_Normal){
 
-	GLint s = (int)0.5f*lod;	// have to be float !
-	GLint d = (int)1.0f*lod;	// just to disable warnings
+	GLfloat s = 0.5f*lod;	// have to be float !
+	GLfloat d = 1.0f*lod;	// just to disable warnings
 
 	if(visState & UP){
 		//glNormal3f(0,0,1);
@@ -224,12 +236,17 @@ void FoxelManager::addPointVertices(GLint x, GLint y, GLint z, char visState, st
 	colection as Quads
 	===========================================
 */
-void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, std::vector<GLint>* v_Vertex){
+void FoxelManager::addPolygonVertices(GLfloat x, GLfloat y, GLfloat z, char visState, std::vector<GLfloat>* v_Vertex, std::vector<GLfloat>* v_Normal){
 	
-	GLint d = 1*lod;
+	GLfloat d = (GLfloat)1*lod;
 
 	if(visState & 1){
 		//glNormal3f(0,0,1); // oben
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(1);
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(1);
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(1);
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(1);
+
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+0); v_Vertex->push_back(z+d); //v1
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+0); v_Vertex->push_back(z+d); //v2
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+d); v_Vertex->push_back(z+d); //v3
@@ -237,6 +254,11 @@ void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, 
 	}
 	if(visState & 2){
 		//glNormal3f(0,0,-1); // unten
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(-1);
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(-1);
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(-1);
+		v_Normal->push_back(0); v_Normal->push_back(0); v_Normal->push_back(-1);
+
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+d); v_Vertex->push_back(z+0); //v5
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+d); v_Vertex->push_back(z+0); //v6
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+0); v_Vertex->push_back(z+0); //v7
@@ -244,6 +266,11 @@ void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, 
 	}
 	if(visState & 4){
 		//glNormal3f(-1,0,0); // links
+		v_Normal->push_back(-1); v_Normal->push_back(0); v_Normal->push_back(0);
+		v_Normal->push_back(-1); v_Normal->push_back(0); v_Normal->push_back(0);
+		v_Normal->push_back(-1); v_Normal->push_back(0); v_Normal->push_back(0);
+		v_Normal->push_back(-1); v_Normal->push_back(0); v_Normal->push_back(0);
+
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+0); v_Vertex->push_back(z+0); //v8
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+0); v_Vertex->push_back(z+d); //v1
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+d); v_Vertex->push_back(z+d); //v4
@@ -251,6 +278,11 @@ void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, 
 	}
 	if(visState & 8){
 		//glNormal3f(1,0,0); // rechts
+		v_Normal->push_back(1); v_Normal->push_back(0); v_Normal->push_back(0);
+		v_Normal->push_back(1); v_Normal->push_back(0); v_Normal->push_back(0);
+		v_Normal->push_back(1); v_Normal->push_back(0); v_Normal->push_back(0);
+		v_Normal->push_back(1); v_Normal->push_back(0); v_Normal->push_back(0);
+
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+d); v_Vertex->push_back(z+0); //v6
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+d); v_Vertex->push_back(z+d); //v3
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+0); v_Vertex->push_back(z+d); //v2
@@ -258,6 +290,11 @@ void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, 
 	}
 	if(visState & 16){
 		//glNormal3f(0,1,0); // vorne
+		v_Normal->push_back(0); v_Normal->push_back(1); v_Normal->push_back(0);
+		v_Normal->push_back(0); v_Normal->push_back(1); v_Normal->push_back(0);
+		v_Normal->push_back(0); v_Normal->push_back(1); v_Normal->push_back(0);
+		v_Normal->push_back(0); v_Normal->push_back(1); v_Normal->push_back(0);
+
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+d); v_Vertex->push_back(z+0); //v8
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+d); v_Vertex->push_back(z+d); //v6
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+d); v_Vertex->push_back(z+d); //v7
@@ -265,6 +302,11 @@ void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, 
 	}
 	if(visState & 32){
 		//glNormal3f(0,-1,0); // hinten
+		v_Normal->push_back(0); v_Normal->push_back(-1); v_Normal->push_back(0);
+		v_Normal->push_back(0); v_Normal->push_back(-1); v_Normal->push_back(0);
+		v_Normal->push_back(0); v_Normal->push_back(-1); v_Normal->push_back(0);
+		v_Normal->push_back(0); v_Normal->push_back(-1); v_Normal->push_back(0);
+
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+0); v_Vertex->push_back(z+0); //v5
 		v_Vertex->push_back(x+d); v_Vertex->push_back(y+0); v_Vertex->push_back(z+d); //v6
 		v_Vertex->push_back(x+0); v_Vertex->push_back(y+0); v_Vertex->push_back(z+d); //v7
@@ -277,33 +319,30 @@ void FoxelManager::addPolygonVertices(GLint x, GLint y, GLint z, char visState, 
 	and upload this Array to the Graphics Card
 	===========================================
 */
-void FoxelManager::packVertices(std::vector<GLint> *v_Vertex){
-	if(vertexCount > 0){
-		glDeleteBuffers(1,&vbo);
-		glDeleteVertexArrays(1,&vbo);
-	}
+void FoxelManager::packVertices(std::vector<GLfloat> *v_Vertex, std::vector<GLfloat>* v_Normal){
 	delete[] vertices;
+	delete[] normals;
 	vertexCount -= (long) anzVertex;
 	polyCount -= (long) anzPolygon;
 	anzVertex = (unsigned int) v_Vertex->size() /3;
 	anzPolygon = anzVertex / 3;
 	vertexCount += anzVertex;
-	vertices = new GLint[v_Vertex->size()];
+	vertices = new GLfloat[v_Vertex->size()];
+	normals = new GLfloat[v_Vertex->size()];
 	for(unsigned int i = 0; i < v_Vertex->size(); i++){
 		vertices[i] = v_Vertex->at(i);
+		normals[i] = v_Normal->at(i);
 	}
 	// Creating Buffer and uploading data
 	if(anzVertex > 0){
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-
-		glGenBuffers(1,&vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLint)*v_Vertex->size(), vertices, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0,3,GL_INT,GL_FALSE,0,0);
-		glEnableVertexAttribArray(0);
-
+		// Vertex
+		glBindBuffer(GL_ARRAY_BUFFER, vbos[0]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*v_Vertex->size(), vertices, GL_DYNAMIC_DRAW);
+		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,0);
+		// Normals
+		glBindBuffer(GL_ARRAY_BUFFER, vbos[1]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*v_Vertex->size(), normals, GL_DYNAMIC_DRAW);
+		glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,0,0);
 	}
 }
 /*
@@ -318,11 +357,13 @@ void FoxelManager::render(){
 	//glPointParameterf(GL_POINT_SIZE_MAX, 2048.0f);
 	//glPointParameterfv(GL_POINT_DISTANCE_ATTENUATION,pointParameter);
 
-	
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(2);
 	for(unsigned int i = 0; i < chunks.size(); i++){
 		chunks.at(i)->drawChunk();
 	}
-	
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(2);
 }
 /*
 	====================================
@@ -330,17 +371,15 @@ void FoxelManager::render(){
 	====================================
  */
 void FoxelManager::drawChunk(){
-	glTranslatef((float)position.x,(float)position.y,(float)position.z);
+	Screen::ViewMatrix.translate((float)position.x,(float)position.y,(float)position.z);
+	glUniformMatrix4fv(ShaderProgram::getUnifLoc(PROGRAM_BASIC, "viewMatrix"), 1, GL_FALSE, Screen::ViewMatrix.getMatrix());
 
 	if(anzVertex > 0){
-		// draw Foxel
-		glColor4f(1.0f, 0.125f, 0.005f, 0.5f);
+		// draw Foxel	
 		glBindVertexArray(vao);
-		glVertexAttrib3f((GLuint)1, 0.0, 0.0, 1.0);
+		glVertexAttrib4f(1,1.0f,0.1f,0.0125f,0.5f);
 		glDrawArrays(GL_QUADS, 0, anzVertex);
-		glBindVertexArray(0);
-		
-		
+		glBindVertexArray(NULL);
 	}
 	// draw a debugBox
 	if(debug){
@@ -348,7 +387,8 @@ void FoxelManager::drawChunk(){
 		glVertexPointer(3,GL_FLOAT,0,debugChunkBoxV);
 		glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, debugChunkBoxI);
 	}
-	glTranslatef((float)-position.x,(float)-position.y,(float)-position.z);
+	Screen::ViewMatrix.translate((float)-position.x,(float)-position.y,(float)-position.z);
+	glUniformMatrix4fv(ShaderProgram::getUnifLoc(PROGRAM_BASIC, "viewMatrix"), 1, GL_FALSE, Screen::ViewMatrix.getMatrix());
 }
 
 void FoxelManager::settingFoxel(Event::setFoxel* setterEvent){

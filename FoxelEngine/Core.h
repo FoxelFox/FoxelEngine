@@ -6,7 +6,6 @@
 #include "World.h"
 #include "Player.h"
 #include "Config.h"
-#include "Axes.h"
 #include "Main_Menu.h"
 #include "Editor.h"
 #include "GlobalLight.h"
@@ -21,7 +20,6 @@ private:
 	SDL_Event* sdlEvent;
 	World* world;
 	Player* player;
-	Axes* axes;
 	Main_Menu* mainMenu;
 	MapEditor::Editor* editor;
 
@@ -39,12 +37,13 @@ public:
 
 
 	Core(void);
-	 bool init(int argc, char *argv[]);
-	 void inputs();
-	 void events();
-	 void update(float* time);
-	 void render();
+	bool init(int argc, char *argv[]);
+	void inputs();
+	void events();
+	void update(float* time);
+	void render();
 	~Core(void);
 
+	void testing();
 };
 

@@ -1,12 +1,16 @@
 #pragma once
+//#include <GL\freeglut.h>
+#include "Event.h"
 #include "FoxelManager.h"
+#include "Screen.h"
+#include "Axes.h"
 class World{
-	
+private:
+	Axes* center;
 public:
-	FoxelManager* foxelManager;
 	World(void);
 	void render();
-	void init();
+	bool load();
 	~World(void);
 };
 

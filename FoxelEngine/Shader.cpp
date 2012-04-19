@@ -1,17 +1,30 @@
 #include "Shader.h"
 using namespace std;
+using namespace GLSL;
+Shader::Shader(string fileName){
+	imFine = true;
+	fileSource = NULL;
+	this->fileName = fileName;
 
-Shader::Shader(char* fileName){
+	//get the right shader typ
+	string fileTyp = fileName.substr(fileName.length()-4, fileName.length());
+	if(fileTyp == "vert"){
+		shaderObject = glCreateShader(GL_VERTEX_SHADER);
+	}else{
+		shaderObject = glCreateShader(GL_FRAGMENT_SHADER);
+	}
 	loadFile(fileName);
+	if(imFine) compile();
 }
 
 
-Shader::~Shader(void)
-{
+Shader::~Shader(void){
+	delete[] fileSource;
+	//glDeleteShader(shaderObject);
 }
 
-void Shader::loadFile(char* fileName){
-	ifstream file (fileName, ios::in);
+void Shader::loadFile(string fileName){
+	ifstream file (fileName, ios::in|ios::binary|ios::ate);
 	if(file.is_open()){
 		fileSize = (GLuint) file.tellg();
 		fileSource = new char [fileSize];
@@ -20,36 +33,34 @@ void Shader::loadFile(char* fileName){
 		file.close();
 	}else{
 		cout << "Unable to open file " << fileName << endl;
+		imFine = false;
 	}
 }
 
 void Shader::compile(){
-	GLuint shaderSource;
-	shaderSource = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(shaderSource,1,(const GLchar**)&fileSource,&fileSize);
-
-	glCompileShader(shaderSource);
+	const char* ss = fileSource;
+	// load source code to GPU
+	glShaderSource(shaderObject, 1, &ss , &fileSize);
+	// compile source code on GPU
+	glCompileShader(shaderObject);
 
 	GLint compiled;
-	glGetShaderiv(shaderSource,GL_COMPILE_STATUS, &compiled); // get compile info
+	// get compile info´s
+	glGetShaderiv(shaderObject,GL_COMPILE_STATUS, &compiled);
 	if(!compiled){
-		cout << "Shader not compiled." << endl;
-		getCompileError(shaderSource);
+		cout << fileName << " not compiled!" << endl;
+		printShaderLog(shaderObject);
+		imFine = false;
 	}
-
-	programm = glCreateProgram();
-	glBindAttribLocation(programm,0, "in_Position");
-
-	glAttachShader(programm,shaderSource);
 }
 
-void getCompileError(GLint shader)
+void Shader::printShaderLog(GLint object)
 {
 	int infoLogLen = 0;
 	int charsWritten = 0;
 	GLchar *infoLog;
 
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLen);
+	glGetShaderiv(object, GL_INFO_LOG_LENGTH, &infoLogLen);
 
 	// should additionally check for OpenGL errors here
 
@@ -57,10 +68,18 @@ void getCompileError(GLint shader)
 	{
 		infoLog = new GLchar[infoLogLen];
 		// error check for fail to allocate memory omitted
-		glGetShaderInfoLog(shader,infoLogLen, &charsWritten, infoLog);
+		glGetShaderInfoLog(object,infoLogLen, &charsWritten, infoLog);
 		cout << "InfoLog:" << endl << infoLog << endl;
 		delete [] infoLog;
 	}
 
 	// should additionally check for OpenGL errors here
+}
+
+bool Shader::allRight(){
+	return imFine;
+}
+
+GLuint Shader::getShaderObject(){
+	return shaderObject;
 }

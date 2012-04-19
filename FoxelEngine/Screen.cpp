@@ -1,10 +1,14 @@
 #include "Screen.h"
 
+float Screen::ar = 0;
 int Screen::screenWidth = 0;
 int Screen::screenHeight = 0;
-float Screen::ar = 0;
+Matrix4 Screen::ProjMatrix;
+Matrix4 Screen::ViewMatrix;
+
 Vec2 Screen::mousePosition = Vec2();
 Vec2 Screen::mouseMotion = Vec2();
+
 
 Screen::Screen(int w, int h, bool isFullscreen)
 {
@@ -64,9 +68,10 @@ void Screen::resize(int w, int h){
 void Screen::load3DView(){
 	glEnable(GL_BLEND);
 	glViewport(0,0,screenWidth,screenHeight);
-	glLoadIdentity();
-	glFrustum(-ar, ar, -1.0, 1.0, 2.0, 16000.0);
-	glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
+	//glFrustum(-ar, ar, -1.0, 1.0, 2.0, 16000.0); // old
+	buildProjectionMatrix(90, ar, 1.0, 1600.0);
+	//glMatrixMode(GL_MODELVIEW);
 }
 
 void Screen::load2DView(){
@@ -76,6 +81,20 @@ void Screen::load2DView(){
 	glOrtho(0, screenWidth, 0, screenHeight , -128, 128);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void Screen::buildProjectionMatrix(float fov, float ratio, float nearPlane, float farPlane) {
+ 
+	float f = 1.0f / tan (fov * ( M_PI / 360.0));
+ 
+	ProjMatrix = Matrix4::Identity();
+ 
+	ProjMatrix.matrix[0] = f / ratio;
+	ProjMatrix.matrix[1 * 4 + 1] = f;
+	ProjMatrix.matrix[2 * 4 + 2] = (farPlane + nearPlane) / (nearPlane - farPlane);
+	ProjMatrix.matrix[3 * 4 + 2] = (2.0f * farPlane * nearPlane) / (nearPlane - farPlane);
+	ProjMatrix.matrix[2 * 4 + 3] = -1.0f;
+	ProjMatrix.matrix[3 * 4 + 3] = 0.0f;
 }
 
 void Screen::catchMousePosition(Vec2 position){
@@ -108,12 +127,20 @@ SDL_Surface* Screen::getSurface(){
 	return screen;
 }
 
-int Screen::getHeight(){
-	return screenHeight;
+GLfloat* Screen::getProjectionMatrix(){
+	return ProjMatrix.matrix;
+}
+
+GLfloat* Screen::getViewMatrix(){
+	return ViewMatrix.matrix;
 }
 
 int Screen::getWidth(){
 	return screenWidth;
+}
+
+int Screen::getHeight(){
+	return screenHeight;
 }
 
 Vec2 Screen::getMousePosition(){

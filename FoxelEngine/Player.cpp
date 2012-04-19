@@ -19,11 +19,6 @@ Player::Player(int typ) : PropDynamic(){
 	controler = new PlayerControler(playerTyp);
 }
 
-Player::Player(Vec3d position)
-			  : PropDynamic(position){
-	camera = new Camera(position);
-}
-
 void Player::catchKeyDown(SDLKey sym){
 	controler->getKeyDown(sym);
 }

@@ -2,16 +2,21 @@
 
 
 Axes::Axes(void){
+	anzVertex = 4;
+	anzIndex = 6;
+	indices = AxeIndices;
+	vertices = AxeVertices;
+	colors = AxeColor;
 }
 
 void Axes::render(){
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glVertexPointer(3,GL_FLOAT,0,lineVertices);
-	glColorPointer(3,GL_FLOAT,0,color);
-	glDrawElements(GL_LINES,6,GL_UNSIGNED_SHORT,indices);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
+	glBindVertexArray(vao);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glDrawElements(GL_LINES,6,GL_UNSIGNED_INT,indices);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glBindVertexArray(0);
 }
 
 Axes::~Axes(void){

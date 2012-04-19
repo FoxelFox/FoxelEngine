@@ -8,11 +8,12 @@ Camera::Camera(Vec3d position)
 	: PropDynamic(position){
 }
 void Camera::setupView(){
-	glLoadIdentity();
-	glRotated(rotation.x, 1, 0, 0);
-	glRotated(rotation.z, 0, 0, 1);
-	glTranslated(position.x,position.y,position.z);
+	Screen::ViewMatrix = Matrix4::Identity();
+	Screen::ViewMatrix.rotate(rotation.x, 1, 0, 0);
+	Screen::ViewMatrix.rotate(rotation.z, 0, 0, 1);
+	Screen::ViewMatrix.translate(position.x,position.y,position.z);
 }
 
 Camera::~Camera(void){
 }
+

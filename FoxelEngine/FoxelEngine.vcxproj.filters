@@ -52,9 +52,6 @@
     <Filter Include="Quelldateien\Entities\Props\Camera">
       <UniqueIdentifier>{7bda0bbf-9c61-43af-a639-e110e2debbab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Entities\Props\Player">
-      <UniqueIdentifier>{9f2e9626-b8da-43c1-801e-4df3b8cae67e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\Forms\Menu">
       <UniqueIdentifier>{8984781b-f326-47c4-9da8-a4c20a060f8f}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,15 @@
     </Filter>
     <Filter Include="Quelldateien\Engine\Shader">
       <UniqueIdentifier>{f60e47a3-fcff-4a44-b755-71d1fd646b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Entities\Props\Player">
+      <UniqueIdentifier>{9f2e9626-b8da-43c1-801e-4df3b8cae67e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Math\Datatypes\Vector">
+      <UniqueIdentifier>{4f3d3333-a043-4f5e-85f2-97307f74da8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Math\Datatypes\Vector\Matrix">
+      <UniqueIdentifier>{f5cb6061-fa45-42ad-b29a-c4d11ab6cc43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,18 +153,6 @@
     <ClCompile Include="Convert.cpp">
       <Filter>Quelldateien\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Vec2.cpp">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClCompile>
-    <ClCompile Include="Vec2d.cpp">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClCompile>
-    <ClCompile Include="Vec3.cpp">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClCompile>
-    <ClCompile Include="Vec3d.cpp">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>Quelldateien\World</Filter>
     </ClCompile>
@@ -179,6 +173,24 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Quelldateien\Engine\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Quelldateien\Engine\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3d.cpp">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3.cpp">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2d.cpp">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>Quelldateien\Math\Datatypes\Vector\Matrix</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,18 +257,6 @@
     <ClInclude Include="Convert.h">
       <Filter>Quelldateien\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Vec2.h">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec2d.h">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec3.h">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec3d.h">
-      <Filter>Quelldateien\Math\Datatypes</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Quelldateien\World</Filter>
     </ClInclude>
@@ -280,6 +280,24 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Quelldateien\Engine\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>Quelldateien\Engine\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3d.h">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3.h">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2d.h">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>Quelldateien\Math\Datatypes\Vector\Matrix</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

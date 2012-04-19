@@ -145,6 +145,7 @@
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GlobalLight.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Menu.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="PlayerControler.cpp" />
     <ClCompile Include="PropDynamic.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="TextButton.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="ToolBox.cpp" />
@@ -180,6 +182,7 @@
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GlobalLight.h" />
+    <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Main_Menu.h" />
     <ClInclude Include="Player.h" />
@@ -187,6 +190,7 @@
     <ClInclude Include="PropDynamic.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="TextField.h" />
     <ClInclude Include="ToolBox.h" />

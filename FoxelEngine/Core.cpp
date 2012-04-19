@@ -9,7 +9,6 @@ Core::Core(){
 	userState = ON_MAIN_MENU;
 	config = new Config();
 	sdlEvent = new SDL_Event();
-	axes = new Axes();
 }
 
 bool Core::init(int argc, char *argv[]){
@@ -33,10 +32,13 @@ bool Core::init(int argc, char *argv[]){
 		cout << "Using GLEW " << glewGetString(GLEW_VERSION) << "\n\n";
 
 		// extensions
-		fstream f;
-		f.open("Extensions.log", ios::out);
-		f << glGetString(GL_EXTENSIONS) << endl;
-		f.close();
+		//fstream f;
+		//f.open("Extensions.log", ios::out);
+		//f << glGetString(GL_EXTENSIONS) << endl;
+		//f.close();
+
+		testing();
+
 
         mainMenu = new Main_Menu();
 		Event::BasicEvent::initEventSystem();
@@ -53,6 +55,9 @@ void Core::startGame(){
 	player = new Player(PLAYER_NORMAL);
 	player->setTyp(PLAYER_FOX);				// debug
 	screen->hideMouse();
+
+	// load data
+	world->load();
 }
 
 void Core::startEditor(){
@@ -78,7 +83,6 @@ void Core::render(){
 								GlobalLight::lightAt(Vec3(0,0,0));
 								player->render();
                                 world->render();
-								axes->render();
                                 break;							
 		//========================================#
 		case ON_MAIN_MENU:      screen->load3DView();
@@ -102,4 +106,22 @@ void Core::render(){
 }
 
 Core::~Core(void){
+}
+
+// Testing Area
+void Core::testing(){
+	float A[] = {1,2,0,1,
+		         0,0,3,0,
+			     1,0,2,0,
+				 0,0,0,2};
+	float B[] = {0,1,0,2,
+		         0,3,1,0,
+			     2,0,2,0,
+				 1,0,1,0};
+	
+	Matrix4 mA(A);
+	Matrix4 mB(B);
+
+	Matrix4 erg(mB*mA);
+	erg.printMatrix();
 }

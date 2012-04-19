@@ -12,7 +12,7 @@ void Core::events(){
 		curentEvent = BasicEvent::getNext();
 		p = (setFoxel*)curentEvent;
 		switch(curentEvent->getID()){
-			case SET_FOXEL: world->foxelManager->settingFoxel((setFoxel*)curentEvent);break;
+			case SET_FOXEL: FoxelManager::settingFoxel((setFoxel*)curentEvent);break;
 			case PLAYMODE: startGame(); break;
 			case EDITMODE: startEditor(); break;
 			case SWITCH_DEBUG: FoxelManager::switchDebug(); break;

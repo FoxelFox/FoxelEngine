@@ -11,6 +11,7 @@ int lines = 0; // debug
 View::View(char viewMode, Vec2 position, Vec2 size) : Entity_2D(position, size){
 	this->viewMode = viewMode;
 	if(viewMode == VIEW_3D) ePlayer = new Player(PLAYER_EDIT);
+	axes.load();
 	zoom = 4;
 	gridDeep = 8;
 }
