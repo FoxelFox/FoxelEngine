@@ -1,13 +1,19 @@
+#include <SDL\SDL.h>
 #include "Editor.h"
 #include "GlobalLight.h"
-#include <SDL\SDL.h>
 
 using namespace MapEditor;
+using namespace GLSL;
+
+int Editor::gridDeep = 8;
 
 Editor::Editor(void) : GameMenu(){
 	playMode = false;
 	controler = new Controler();
 	toolBox = new ToolBox(Vec2(0,0),Vec2(128,(float)Screen::getHeight()));
+	brush = new BrushBox();
+	center = new Axes();
+	center->load();
 
 	Vec2 viewSize;
 	viewSize.x = (float)(Screen::getWidth()  / 2) - toolBox->getSize().x;
@@ -25,17 +31,27 @@ Editor::~Editor(void){
 void Editor::draw(){
 	Screen::load2DView();
 	toolBox->draw();
+	PM::useProg(PROGRAM_FOXEL);
 	for(int i = 0; i < 4; i++){
 		views[i]->setUp();
-		glDisable(GL_BLEND);
-		GlobalLight::turnOn();
 		views[i]->draw();
-		GlobalLight::turnOff();
+		FoxelManager::render();
+		PM::useProg(PROGRAM_BASIC);
+		brush->draw();
+		center->render();
 		glEnable(GL_BLEND);
 	}
+	PM::useProg(PROGRAM_NULL);
 }
 
 void Editor::update(float* time){
+	bool mouseIsMoving = Screen::getMouseMotion().x != 0 || Screen::getMouseMotion().y != 0;
+	
+	if(controler->Grab || controler->midleMouseButton){
+		// stay on active view
+	}else{
+		activeView = catchActiveView();
+	}
 	if(controler->Tab){
 		if(playMode == true){
 			playMode = false;
@@ -50,25 +66,32 @@ void Editor::update(float* time){
 		views[i]->update(time);
 	}
 
-	if(playMode && (Screen::getMouseMotion().x != 0 || Screen::getMouseMotion().y != 0)){
+	// on 3D view
+	if(playMode && mouseIsMoving){
 		views[3]->getPlayer()->catchMouseMotion(-Screen::getMouseMotion().x, Screen::getMouseMotion().y);
 	}
 
-	// Move View if midleMouse Button is pressed
-	if(controler->midleMouseButton && (Screen::getMouseMotion().x != 0 || Screen::getMouseMotion().y != 0)){
-		try{
-			catchActiveView()->moveViewPosition(Vec3(Screen::getMouseMotion().x, Screen::getMouseMotion().y,0));
-		}catch(int noView){
-			noView = 0;// Mouse isnt on a view
+	if(controler->Grab){
+		Screen::hideMouse();
+		if(controler->leftMouseButton) brush->startPaint();
+		else brush->stopPaint();
+		// Move Brush
+		if(!controler->midleMouseButton && mouseIsMoving && activeView != NULL){
+			switch(activeView->getViewMode()){
+			case VIEW_TOP:    brush->move(Vec3(-Screen::getMouseMotion().x / activeView->zoom,-Screen::getMouseMotion().y / activeView->zoom,0.0f)); break;
+			case VIEW_FRONT:  brush->move(Vec3(-Screen::getMouseMotion().x / activeView->zoom,0.0f,-Screen::getMouseMotion().y / activeView->zoom)); break;
+			case VIEW_RIGHT:  brush->move(Vec3(0.0f,Screen::getMouseMotion().x / activeView->zoom,-Screen::getMouseMotion().y / activeView->zoom)); break;
+			}
 		}
 	}
 
-	if(controler->wheelState != 0){
-		try{
-			catchActiveView()->addZoomValue((float)controler->wheelState);
-		}catch(int noView){
-			noView = 0;// Mouse isnt on a view
-		}
+	// Move View if midleMouse Button is pressed
+	if(controler->midleMouseButton && mouseIsMoving && activeView != NULL){
+		activeView->moveViewPosition(Vec3(Screen::getMouseMotion().x, Screen::getMouseMotion().y,0));
+	}
+
+	if(controler->wheelState != 0 && activeView != NULL){
+		activeView->addZoomValue((float)controler->wheelState);
 		controler->wheelState = 0;
 	}
 }
@@ -86,7 +109,7 @@ View* Editor::catchActiveView(){
 			return views[i];
 		}
 	}
-	throw NULL;
+	return NULL;
 }
 
 void Editor::resize(){
@@ -100,11 +123,11 @@ void Editor::resize(){
 	views[2]->setPosition(Vec2(viewSize.x + toolBox->getSize().x, 0 ));
 	views[3]->setPosition(Vec2(  0 + toolBox->getSize().x, viewSize.y));
 
-
 	for(int i = 0; i < views.size(); i++){
 		views[i]->setSize(viewSize);
 	}     
 }
+
 void Editor::catchKeyDown(SDLKey sym){
 	controler->catchKeyDown(sym);
 	if(playMode) views[3]->getPlayer()->catchKeyDown(sym);
@@ -113,6 +136,10 @@ void Editor::catchKeyDown(SDLKey sym){
 void Editor::catchKeyUp(SDLKey sym){
 	controler->catchKeyUp(sym);
 	views[3]->getPlayer()->catchKeyUp(sym);
+}
+
+int Editor::getGridDeep(){
+	return gridDeep;
 }
 
 Controler* Editor::getControler(){

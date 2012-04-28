@@ -1,4 +1,7 @@
 #include "Screen.h"
+#include "ShaderProgram.h"
+
+using namespace GLSL;
 
 float Screen::ar = 0;
 int Screen::screenWidth = 0;
@@ -68,10 +71,7 @@ void Screen::resize(int w, int h){
 void Screen::load3DView(){
 	glEnable(GL_BLEND);
 	glViewport(0,0,screenWidth,screenHeight);
-	//glLoadIdentity();
-	//glFrustum(-ar, ar, -1.0, 1.0, 2.0, 16000.0); // old
 	buildProjectionMatrix(90, ar, 1.0, 1600.0);
-	//glMatrixMode(GL_MODELVIEW);
 }
 
 void Screen::load2DView(){
@@ -83,18 +83,37 @@ void Screen::load2DView(){
 	glLoadIdentity();
 }
 
+void Screen::updateViewMatix(){
+	glUniformMatrix4fv(PM::getActiveUnifLoc("viewMatrix"), 1, GL_FALSE, ViewMatrix.matrix);
+}
+
+void Screen::updateProjMatix(){
+	glUniformMatrix4fv(PM::getActiveUnifLoc("projMatrix"), 1, GL_FALSE, ProjMatrix.matrix);
+}
+
 void Screen::buildProjectionMatrix(float fov, float ratio, float nearPlane, float farPlane) {
- 
 	float f = 1.0f / tan (fov * ( M_PI / 360.0));
  
 	ProjMatrix = Matrix4::Identity();
- 
 	ProjMatrix.matrix[0] = f / ratio;
 	ProjMatrix.matrix[1 * 4 + 1] = f;
 	ProjMatrix.matrix[2 * 4 + 2] = (farPlane + nearPlane) / (nearPlane - farPlane);
 	ProjMatrix.matrix[3 * 4 + 2] = (2.0f * farPlane * nearPlane) / (nearPlane - farPlane);
 	ProjMatrix.matrix[2 * 4 + 3] = -1.0f;
 	ProjMatrix.matrix[3 * 4 + 3] = 0.0f;
+
+	glUniformMatrix4fv(PM::getActiveUnifLoc("projMatrix"), 1, GL_FALSE, ProjMatrix.matrix);
+}
+
+void Screen::buildOrthoMatrix(float left, float right, float bottom, float top, float nearPlane, float farPlane){
+	ProjMatrix = Matrix4::Identity();
+	ProjMatrix.matrix[ 0] =  2.0 / (right - left);
+	ProjMatrix.matrix[ 5] =  2.0 / (top - bottom);
+	ProjMatrix.matrix[10] = -2.0 / (farPlane - nearPlane);
+	ProjMatrix.matrix[12] = -(right + left) / (right - left);
+	ProjMatrix.matrix[13] = -(top  + bottom) / (top  - bottom);
+	ProjMatrix.matrix[14] = -(farPlane  + nearPlane) / (farPlane - nearPlane);
+	glUniformMatrix4fv(PM::getActiveUnifLoc("projMatrix"), 1, GL_FALSE, ProjMatrix.matrix);
 }
 
 void Screen::catchMousePosition(Vec2 position){

@@ -1,10 +1,11 @@
 #include "Controler.h"
+#include "Screen.h"
 
 using namespace MapEditor;
 Controler::Controler(void){
 	rightMouseButton = leftMouseButton = midleMouseButton = false;
 	wheelState = 0;
-	A = S = D = W = Shift = Tab = false;
+	A = S = D = W = Shift = Tab = Grab = false;
 }
 
 
@@ -20,6 +21,16 @@ void Controler::catchKeyDown(SDLKey sym){
 		case SDLK_s: S = true; break;
 		case SDLK_TAB: Tab = true; break;
 		case SDLK_LSHIFT: Shift = true; break;
+
+		case SDLK_f: 
+			if(Grab){ 
+				Grab = false;
+				Screen::showMouse();
+			}
+			else{
+				Grab = true;
+			}
+			break;
 	}
 }
 

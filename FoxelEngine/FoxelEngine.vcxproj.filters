@@ -67,17 +67,23 @@
     <Filter Include="Quelldateien\Engine\Lighting">
       <UniqueIdentifier>{17699c1c-a615-4db1-8749-3ba95911687b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Engine\Shader">
-      <UniqueIdentifier>{f60e47a3-fcff-4a44-b755-71d1fd646b1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\Entities\Props\Player">
       <UniqueIdentifier>{9f2e9626-b8da-43c1-801e-4df3b8cae67e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Quelldateien\Math\Datatypes\Vector">
       <UniqueIdentifier>{4f3d3333-a043-4f5e-85f2-97307f74da8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Math\Datatypes\Vector\Matrix">
+    <Filter Include="Quelldateien\Math\Datatypes\Matrix">
       <UniqueIdentifier>{f5cb6061-fa45-42ad-b29a-c4d11ab6cc43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Engine\Shading">
+      <UniqueIdentifier>{8023cdbe-2c5f-4ee5-9a54-170ce7df4924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Engine\Shading\Shader">
+      <UniqueIdentifier>{f60e47a3-fcff-4a44-b755-71d1fd646b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Map Editor\Brushes">
+      <UniqueIdentifier>{55c57dae-2266-40a8-9dc9-3faa775ec363}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,10 +178,10 @@
       <Filter>Quelldateien\Engine\Lighting</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Quelldateien\Engine\Shader</Filter>
+      <Filter>Quelldateien\Engine\Shading\Shader</Filter>
     </ClCompile>
     <ClCompile Include="ShaderProgram.cpp">
-      <Filter>Quelldateien\Engine\Shader</Filter>
+      <Filter>Quelldateien\Engine\Shading\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Vec3d.cpp">
       <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
@@ -190,7 +196,16 @@
       <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
     </ClCompile>
     <ClCompile Include="Matrix4.cpp">
-      <Filter>Quelldateien\Math\Datatypes\Vector\Matrix</Filter>
+      <Filter>Quelldateien\Math\Datatypes\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Quelldateien\Engine\Shading</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Quelldateien\Engine\Shading</Filter>
+    </ClCompile>
+    <ClCompile Include="BrushBox.cpp">
+      <Filter>Quelldateien\Map Editor\Brushes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,10 +294,10 @@
       <Filter>Quelldateien\Engine\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Quelldateien\Engine\Shader</Filter>
+      <Filter>Quelldateien\Engine\Shading\Shader</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgram.h">
-      <Filter>Quelldateien\Engine\Shader</Filter>
+      <Filter>Quelldateien\Engine\Shading\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Vec3d.h">
       <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
@@ -297,7 +312,16 @@
       <Filter>Quelldateien\Math\Datatypes\Vector</Filter>
     </ClInclude>
     <ClInclude Include="Matrix4.h">
-      <Filter>Quelldateien\Math\Datatypes\Vector\Matrix</Filter>
+      <Filter>Quelldateien\Math\Datatypes\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Quelldateien\Engine\Shading</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Quelldateien\Engine\Shading</Filter>
+    </ClInclude>
+    <ClInclude Include="BrushBox.h">
+      <Filter>Quelldateien\Map Editor\Brushes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

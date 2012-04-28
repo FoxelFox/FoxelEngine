@@ -1,6 +1,7 @@
 #include "ShaderProgram.h"
 
 using namespace GLSL;
+ProgramTyp ShaderProgram::ActiveProgram;
 ShaderProgram::ShaderProgram(ProgramTyp typ){
 	programObject = glCreateProgram();
 	switch(typ){
@@ -9,6 +10,13 @@ ShaderProgram::ShaderProgram(ProgramTyp typ){
 							glBindAttribLocation(programObject,0, "in_Position");
 							glBindAttribLocation(programObject,1, "in_Color");
 							glBindAttribLocation(programObject,2, "in_Normal");
+							break;
+		case PROGRAM_FOXEL: fragmentShader = new Shader("Shader/Foxel.frag");
+		                    vertexSchader  = new Shader("Shader/Foxel.vert");
+							glBindAttribLocation(programObject,0, "in_Position");
+							glBindAttribLocation(programObject,1, "in_Color");
+							glBindAttribLocation(programObject,2, "in_Normal");
+							break;
 	}
 	if(fragmentShader->allRight() && vertexSchader->allRight()){
 		glAttachShader(programObject, fragmentShader->getShaderObject());
@@ -30,8 +38,11 @@ GLuint ShaderProgram::getProgram(){
 }
 
 void ShaderProgram::useProg(ProgramTyp typ){
-	if(progMap.find(typ) != progMap.end() || typ == PROGRAM_NULL){
+	if(progMap.find(typ) != progMap.end()){
 		glUseProgram(progMap[typ]->getProgram());
+		ActiveProgram = typ;
+	}else if(typ == PROGRAM_NULL){
+		glUseProgram(NULL);
 	}else{
 		progMap[typ] = new ShaderProgram(typ);
 		useProg(typ);
@@ -39,5 +50,14 @@ void ShaderProgram::useProg(ProgramTyp typ){
 }
 
 GLint ShaderProgram::getUnifLoc(ProgramTyp typ, const GLchar *name){
-	return glGetUniformLocation(progMap[typ]->getProgram(), name);
+	if(progMap.find(typ) != progMap.end()){
+		return glGetUniformLocation(progMap[typ]->getProgram(), name);
+	}else{
+		progMap[typ] = new ShaderProgram(typ);
+		useProg(typ);
+	}
+}
+
+GLint ShaderProgram::getActiveUnifLoc(const GLchar *name){
+	return glGetUniformLocation(progMap[ActiveProgram]->getProgram(), name);
 }

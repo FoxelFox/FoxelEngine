@@ -28,6 +28,14 @@ Matrix4 Matrix4::Identity(){
 	return id;
 }
 
+void Matrix4::scale(float x, float y, float z){
+	Matrix4 scaly = Matrix4::Identity();
+	scaly.matrix[ 0] = x;
+	scaly.matrix[ 5] = y;
+	scaly.matrix[10] = z;
+	*this = *this * scaly;
+}
+
 /*  =========================
 	Transponierte Translation
 	=========================

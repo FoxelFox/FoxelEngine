@@ -14,15 +14,14 @@ bool World::load(){
 }
 
 void World::render(){
-	ShaderProgram::useProg(PROGRAM_BASIC);
-	glUniform4f(ShaderProgram::getUnifLoc(PROGRAM_BASIC, "test"), 0.0, 1.0, 0.0, 1.0);
-	glUniformMatrix4fv(ShaderProgram::getUnifLoc(PROGRAM_BASIC, "projMatrix"), 1, GL_FALSE, Screen::getProjectionMatrix());
-	glUniformMatrix4fv(ShaderProgram::getUnifLoc(PROGRAM_BASIC, "viewMatrix"), 1, GL_FALSE, Screen::ViewMatrix.getMatrix());
+	Screen::updateViewMatix();
 
 	FoxelManager::render();
+	glutSolidSphere(4,32,16);
 	center->render();
-	glutSolidRhombicDodecahedron();
-	glUseProgram(NULL);
+
+	
+	
 }
 
 World::~World(void){

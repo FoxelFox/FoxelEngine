@@ -2,6 +2,7 @@
 #include <iostream>
 #include <bitset>
 #include <vector>
+#include <algorithm>
 #include <map>
 #include "Foxel.h"
 #include "DrawableGameComponent.h"
@@ -74,9 +75,9 @@ public:
 	static void render();
 	static void switchDebug();
 	static void settingFoxel(Event::setFoxel* setterEvent);
+	static void makeBlock(Vec3 start, Vec3 end, int id);
 private:
 	FoxelManager(int x, int y, int z);
-	std::vector<int> genNewID(int x, int y, int z);
 	void addPointVertices(GLfloat x, GLfloat y, GLfloat z, char visState, std::vector<GLfloat>* v_Vertex, std::vector<GLfloat>* v_Normal);
 	void addPolygonVertices(GLfloat x, GLfloat y, GLfloat z, char visState, std::vector<GLfloat>* v_Vertex, std::vector<GLfloat>* v_Normal);
 	void packVertices(std::vector<GLfloat> *v_Vertex, std::vector<GLfloat>* v_Normal);

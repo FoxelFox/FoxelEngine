@@ -7,6 +7,7 @@ namespace MapEditor{
 	private:
 		bool rightMouseButton, leftMouseButton, midleMouseButton;
 		bool A,S,D,W,Shift,Tab;
+		bool Grab;
 		int wheelState;
 
 	public:

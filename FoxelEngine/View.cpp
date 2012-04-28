@@ -3,17 +3,17 @@
 #include <GL\freeglut.h>
 #include <math.h>
 #include <iostream>
+#include "Editor.h"
 
 using namespace MapEditor;
+using namespace GLSL;
 
 int lines = 0; // debug
 
-View::View(char viewMode, Vec2 position, Vec2 size) : Entity_2D(position, size){
+View::View(ViewModus viewMode, Vec2 position, Vec2 size) : Entity_2D(position, size){
 	this->viewMode = viewMode;
 	if(viewMode == VIEW_3D) ePlayer = new Player(PLAYER_EDIT);
-	axes.load();
 	zoom = 4;
-	gridDeep = 8;
 }
 
 View::~View(void){
@@ -21,26 +21,27 @@ View::~View(void){
 
 void View::setUp(){
 	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION); //old
+	glLoadIdentity();			//old
 	glViewport((GLsizei)position.x, (GLsizei)position.y, (GLsizei)size.x, (GLsizei)size.y);
-	//glLoadIdentity();
-
-	glOrtho(-size.x/2, size.x/2, -size.y/2, size.y/2,-128,128);
-	
-	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	
+	glOrtho(-size.x/2, size.x/2, -size.y/2, size.y/2,-128,128); // old
+	Screen::buildOrthoMatrix(-size.x/2, size.x/2, -size.y/2, size.y/2,-128,128);
+
+	glMatrixMode(GL_MODELVIEW);	// old
+	glLoadIdentity();			// old
+	Screen::ViewMatrix = Matrix4::Identity();
 
 	const float xMin = -size.x/2+1;
 	const float xMax =  size.x/2;
 	const float yMin = -size.y/2+1;
 	const float yMax =  size.y/2;
 	// draw Background
+	PM::useProg(PROGRAM_NULL);
 	glBegin(GL_QUADS);
 	glColor3f(0.02f,0.02f,0.02f);	glVertex3f(xMin,yMin, -128);
-									glVertex3f(xMax,yMin, -128);																
+									glVertex3f(xMax,yMin, -128);
 	glColor3f(0.15f,0.15f,0.15f);	glVertex3f(xMax,yMax, -128);
 									glVertex3f(xMin,yMax, -128);
 	glEnd();
@@ -55,8 +56,9 @@ void View::setUp(){
 	glEnd();
 
 	GlobalLight::lightAt(Vec3(0,0,128));
-	glScalef(zoom,zoom,zoom);
-	
+	glScalef(zoom,zoom,zoom); //old
+	Screen::ViewMatrix.scale(zoom,zoom,zoom);
+
 	if(viewMode > 0){
 		drawGrid();
 	}
@@ -67,12 +69,16 @@ void View::setUp(){
 		{
 			glRotatef(0,0,0,0);
 			glTranslatef(-viewPosition.x,-viewPosition.y,0);
+			Screen::ViewMatrix.rotate(0,0,0,0);
+			Screen::ViewMatrix.translate(-viewPosition.x,-viewPosition.y,0);
 			break;
 		}
 		case VIEW_FRONT:
 		{
 			glRotatef(-90,1,0,0);
 			glTranslatef(-viewPosition.x,0,-viewPosition.y);
+			Screen::ViewMatrix.rotate(-90,1,0,0);
+			Screen::ViewMatrix.translate(-viewPosition.x,0,-viewPosition.y);
 			break;
 		}
 		case VIEW_RIGHT:
@@ -80,21 +86,25 @@ void View::setUp(){
 			glRotatef(-90,1,0,0);
 			glRotatef(90,0,0,1);
 			glTranslatef(0, viewPosition.x, -viewPosition.y);
+			Screen::ViewMatrix.rotate(-90,1,0,0);
+			Screen::ViewMatrix.rotate(90,0,0,1);
+			Screen::ViewMatrix.translate(0, viewPosition.x, -viewPosition.y);
 			break;
 		}
 	}
 		
 	if(viewMode == VIEW_3D){
 		float ar = (float) size.x / (float) size.y;
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glFrustum(-ar, ar, -1.0, 1.0, 2.0, 16000.0);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		GlobalLight::lightAt(Vec3(0,0,0));
+		PM::useProg(PROGRAM_FOXEL);
+		Screen::buildProjectionMatrix(90.0f,ar,1.0f,2048.0f);
 		ePlayer->render();
+		Screen::updateViewMatix();
+		Screen::updateProjMatix();
 	}
-	axes.render();
+	PM::useProg(PROGRAM_BASIC);
+	Screen::updateViewMatix();
+	Screen::updateProjMatix();
+	
 }
 
 void View::update(float* time){
@@ -102,10 +112,9 @@ void View::update(float* time){
 }
 
 void View::draw(){
-	glColor3f(0.5f,0.5f,0.5f);
-	glutSolidTeapot(-1);
-	glTranslatef(8,8,0);
-	glutSolidCube(1);
+	if(viewMode == VIEW_3D){	
+		PM::useProg(PROGRAM_FOXEL);
+	}	
 }
 
 void View::drawGrid(){
@@ -118,9 +127,9 @@ void View::drawGrid(){
 	int rasterXL = (int)(viewPosition.x - size.x/(2*zoom));
 	int rasterYU = (int)(viewPosition.y + size.y/(2*zoom));
 	int rasterYD = (int)(viewPosition.y - size.y/(2*zoom));
-	rasterYD -= rasterYD % gridDeep;
-	rasterXL -= rasterXL % gridDeep;
-	for(int x = rasterXL; x <= rasterXR; x += gridDeep){
+	rasterYD -= rasterYD % Editor::getGridDeep();
+	rasterXL -= rasterXL % Editor::getGridDeep();
+	for(int x = rasterXL; x <= rasterXR; x += Editor::getGridDeep()){
 		if(x % 128 == 0){
 			glColor3f(0.3f,0.1f,0.1f);
 		}else{
@@ -132,7 +141,7 @@ void View::drawGrid(){
 	}
 	// horizontal lines
 	
-	for(int y = rasterYD; y <= rasterYU; y += gridDeep){
+	for(int y = rasterYD; y <= rasterYU; y += Editor::getGridDeep()){
 		if(y % 128 == 0){
 			glColor3f(0.3f,0.1f,0.1f);
 		}else{
@@ -151,11 +160,15 @@ void View::addZoomValue(float value){
 	}else{
 		zoom -= zoom/2;
 	}
-	std::cout << "zoom:\t" << zoom << "\tgrid:\t" << gridDeep << "\tlines:\t" << lines << std::endl;
+	std::cout << "zoom:\t" << zoom << "\tgrid:\t" << Editor::getGridDeep() << "\tlines:\t" << lines << std::endl;
 }
 
 void View::moveViewPosition(Vec3 value){
 		viewPosition += value * (1.0f/zoom);
+}
+
+ViewModus View::getViewMode(){
+	return viewMode;
 }
 
 Player* View::getPlayer(){

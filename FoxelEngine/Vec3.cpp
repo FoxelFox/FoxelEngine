@@ -56,6 +56,22 @@ Vec3 Vec3::operator-(){
 	return tmp;
 }
 
+Vec3 Vec3::operator-(Vec3 vector){
+	Vec3 tmp = *this;
+	tmp.x -= vector.x;
+	tmp.y -= vector.y;
+	tmp.z -= vector.z;
+	return tmp;
+}
+
+Vec3 Vec3::operator+(Vec3 vector){
+	Vec3 tmp = *this;
+	tmp.x += vector.x;
+	tmp.y += vector.y;
+	tmp.z += vector.z;
+	return tmp;
+}
+
 Vec3::~Vec3(void)
 {
 }

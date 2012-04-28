@@ -80,7 +80,8 @@ void Player::render(){
 
 void Player::createEvents(){
 
-	if(playerTyp != PLAYER_EDIT && controler->setFoxel){
+	//if(playerTyp != PLAYER_EDIT && controler->setFoxel){
+		if(controler->setFoxel){ // debug
 		new Event::setFoxel(&position, 1);
 	}
 }

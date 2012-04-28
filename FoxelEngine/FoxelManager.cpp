@@ -53,14 +53,6 @@ void FoxelManager::deleteAll(){
 	idMap.clear();
 }
 
-std::vector<int> FoxelManager::genNewID(int x, int y, int z){
-	std::vector<int> newID;
-	newID.push_back(x);
-	newID.push_back(y);
-	newID.push_back(z);
-	return newID;
-}
-
 void FoxelManager::initialise(){
 	lod = 1;
 	foxel = NULL;
@@ -84,7 +76,7 @@ void FoxelManager::initialise(){
 			}
 		}
 	}
-	setupFoxels();
+	//setupFoxels();
 }
 /*
 	==================================================
@@ -334,7 +326,10 @@ void FoxelManager::packVertices(std::vector<GLfloat> *v_Vertex, std::vector<GLfl
 		normals[i] = v_Normal->at(i);
 	}
 	// Creating Buffer and uploading data
+	
 	if(anzVertex > 0){
+		glBindVertexArray(vao);
+
 		// Vertex
 		glBindBuffer(GL_ARRAY_BUFFER, vbos[0]);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*v_Vertex->size(), vertices, GL_DYNAMIC_DRAW);
@@ -356,7 +351,9 @@ void FoxelManager::render(){
 	//glPointParameterf(GL_POINT_SIZE_MIN, 0.0f);
 	//glPointParameterf(GL_POINT_SIZE_MAX, 2048.0f);
 	//glPointParameterfv(GL_POINT_DISTANCE_ATTENUATION,pointParameter);
-
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	PM::useProg(PROGRAM_FOXEL);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(2);
 	for(unsigned int i = 0; i < chunks.size(); i++){
@@ -364,6 +361,10 @@ void FoxelManager::render(){
 	}
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(2);
+	glUniform3f(PM::getUnifLoc(PROGRAM_FOXEL, "chunk_Position"),0.0f,0.0f,0.0f);
+	PM::useProg(PROGRAM_NULL);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 }
 /*
 	====================================
@@ -372,12 +373,12 @@ void FoxelManager::render(){
  */
 void FoxelManager::drawChunk(){
 	Screen::ViewMatrix.translate((float)position.x,(float)position.y,(float)position.z);
-	glUniformMatrix4fv(ShaderProgram::getUnifLoc(PROGRAM_BASIC, "viewMatrix"), 1, GL_FALSE, Screen::ViewMatrix.getMatrix());
-
+	glUniformMatrix4fv(PM::getUnifLoc(PROGRAM_FOXEL, "viewMatrix"), 1, GL_FALSE, Screen::ViewMatrix.getMatrix());
+	glUniform3f(PM::getUnifLoc(PROGRAM_FOXEL, "chunk_Position"),(float)-position.x,(float)-position.y,(float)-position.z);
 	if(anzVertex > 0){
 		// draw Foxel	
 		glBindVertexArray(vao);
-		glVertexAttrib4f(1,1.0f,0.1f,0.0125f,0.5f);
+		glVertexAttrib4f(1,1.0f,0.25f,0.0125f,0.5f);
 		glDrawArrays(GL_QUADS, 0, anzVertex);
 		glBindVertexArray(NULL);
 	}
@@ -388,7 +389,7 @@ void FoxelManager::drawChunk(){
 		glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, debugChunkBoxI);
 	}
 	Screen::ViewMatrix.translate((float)-position.x,(float)-position.y,(float)-position.z);
-	glUniformMatrix4fv(ShaderProgram::getUnifLoc(PROGRAM_BASIC, "viewMatrix"), 1, GL_FALSE, Screen::ViewMatrix.getMatrix());
+	glUniformMatrix4fv(PM::getUnifLoc(PROGRAM_FOXEL, "viewMatrix"), 1, GL_FALSE, Screen::ViewMatrix.getMatrix());
 }
 
 void FoxelManager::settingFoxel(Event::setFoxel* setterEvent){
@@ -426,6 +427,57 @@ void FoxelManager::settingFoxel(Event::setFoxel* setterEvent){
 		idMap[chunkID]->bitGrid[x][y][z] = true;
 		idMap[chunkID]->setupFoxels();
 		std::cout << "Chunks: " << chunks.size() << "   Total Vertices:  " << vertexCount << std::endl;
+	}
+}
+
+void FoxelManager::makeBlock(Vec3 start, Vec3 end, int id){
+	std::vector<std::vector<int>> chunkIDs;
+	std::vector<int> currentChunkID;
+	int idCX, idCY, idCZ;
+
+	int fx,fy,fz;
+	for(int x = (int)start.x; x < (int)end.x; x++){
+		for(int y = (int)start.y; y < (int)end.y; y++){
+			for(int z = (int)start.z; z < (int)end.z; z++){
+				currentChunkID.clear();
+				// tracing Chunk id
+				idCX = x / BITSIZE; 
+				idCY = y / BITSIZE;
+				idCZ = z / BITSIZE;
+
+				if(x < 0) idCX--;
+				if(y < 0) idCY--;
+				if(z < 0) idCZ--;
+
+				currentChunkID.push_back(idCX);
+				currentChunkID.push_back(idCY);
+				currentChunkID.push_back(idCZ);
+				
+				// chunk exist? no? create new ...
+				if(idMap.find(currentChunkID) == idMap.end()){
+					chunks.push_back(new FoxelManager(idCX,idCY,idCZ));
+				}
+				if(std::find(chunkIDs.begin(), chunkIDs.end(), currentChunkID) == chunkIDs.end()) {
+					chunkIDs.push_back(currentChunkID);
+				}
+
+				// tracing Foxel position in chunk
+				fx = x % (BITSIZE);
+				fy = y % (BITSIZE);
+				fz = z % (BITSIZE);
+
+				if(x <= 0 && idCX < 0) fx += BITSIZE-1;
+				if(y <= 0 && idCY < 0) fy += BITSIZE-1;
+				if(z <= 0 && idCZ < 0) fz += BITSIZE-1;
+
+				idMap[currentChunkID]->bitGrid[fx][fy][fz] = true;
+			}
+		}
+	}
+
+	// update Foxels
+	for(int i = 0; i < chunkIDs.size(); i++){
+		idMap[chunkIDs[i]]->setupFoxels();
 	}
 }
 

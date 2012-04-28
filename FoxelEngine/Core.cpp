@@ -3,6 +3,7 @@
 #include <fstream>
 
 using namespace std;
+using namespace GLSL;
 
 Core::Core(){
 	running = false;
@@ -42,6 +43,8 @@ bool Core::init(int argc, char *argv[]){
 
         mainMenu = new Main_Menu();
 		Event::BasicEvent::initEventSystem();
+		PM::useProg(PROGRAM_BASIC);
+		PM::useProg(PROGRAM_NULL);
 		GlobalLight::load();
 		running = true;
 		return true;
@@ -57,12 +60,12 @@ void Core::startGame(){
 	screen->hideMouse();
 
 	// load data
-	world->load();
+	world->load();;
 }
 
 void Core::startEditor(){
 	userState = ON_EDIT;
-	delete world, player;
+	//delete world, player;
 	editor = new MapEditor::Editor();
 }
 
@@ -79,19 +82,20 @@ void Core::render(){
 	screen->reset();
 	switch(userState){
 		//========================================#
-		case ON_GAME:           screen->load3DView();
-								GlobalLight::lightAt(Vec3(0,0,0));
+		case ON_GAME:       	PM::useProg(PROGRAM_FOXEL);
+								screen->load3DView();
 								player->render();
                                 world->render();
-                                break;							
+                                break;
 		//========================================#
-		case ON_MAIN_MENU:      screen->load3DView();
+		case ON_MAIN_MENU:      //PM::useProg(PROGRAM_FOXEL);
+			                    screen->load3DView();
                                 mainMenu->draw();
                                 break;
 							
 		//========================================#
-		case ON_GAME_PAUSE:     screen->load3DView();
-								GlobalLight::lightAt(Vec3(0,0,0));
+		case ON_GAME_PAUSE:     PM::useProg(PROGRAM_FOXEL);
+		                        screen->load3DView();
 								player->render();
 								world->render();  
                                 mainMenu->draw();

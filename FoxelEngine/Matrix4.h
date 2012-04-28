@@ -14,7 +14,7 @@ public:
 	static Matrix4 Identity();
 	Matrix4 operator*(Matrix4 B);
 
-
+	void scale(float x, float y, float z);
 	void translate(float x,float y,float z);
 	void rotate(float angle, float x, float y, float z);
 

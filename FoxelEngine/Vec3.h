@@ -15,6 +15,8 @@ public:
 	Vec3 operator*(float skalar);
 	Vec3 operator*(Vec3 vector);
 	Vec3 operator-();
+	Vec3 operator-(Vec3 vector);
+	Vec3 operator+(Vec3 vector);
 	~Vec3(void);
 };
 

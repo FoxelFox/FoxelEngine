@@ -10,8 +10,6 @@ out vec4 ex_Color;
 
 void main(void)
 {
-	ex_Color = in_Color;
+	ex_Color = vec4(in_Color);
 	gl_Position = projMatrix * viewMatrix * vec4(in_Position, 1.0);
-
-	
 }

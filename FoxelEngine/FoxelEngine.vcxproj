@@ -67,6 +67,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <TargetName>Foxel Engine Debug</TargetName>
+    <OutDir>..\..\..\..\Release\Debug</OutDir>
+    <IntDir>..\..\..\..\Release\temp debug</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
@@ -128,7 +131,9 @@
   <ItemGroup>
     <ClCompile Include="Axes.cpp" />
     <ClCompile Include="BitmapText.cpp" />
+    <ClCompile Include="BrushBox.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Controler.cpp" />
     <ClCompile Include="Convert.cpp" />
@@ -145,6 +150,7 @@
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GlobalLight.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="main.cpp" />
@@ -167,7 +173,9 @@
   <ItemGroup>
     <ClInclude Include="Axes.h" />
     <ClInclude Include="BitmapText.h" />
+    <ClInclude Include="BrushBox.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Controler.h" />
     <ClInclude Include="Convert.h" />
@@ -182,6 +190,7 @@
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GlobalLight.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Main_Menu.h" />

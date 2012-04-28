@@ -31,9 +31,12 @@ public:
 
 	static Vec2 getMousePosition();
 	static Vec2 getMouseMotion();
-	static void buildProjectionMatrix(float fov, float ratio, float near, float far);
+	static void buildProjectionMatrix(float fov, float ratio, float nearPlane, float farPlane);
+	static void buildOrthoMatrix(float left, float right, float top, float bottom, float nearPlane, float farPlane);
     static void load2DView();
 	static void load3DView();
+	static void updateViewMatix();
+	static void updateProjMatix();
 
 	static void hideMouse();
 	static void showMouse();
