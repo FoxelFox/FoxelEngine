@@ -1,5 +1,8 @@
 #pragma once
 #include "TextField.h"
+
+
+
 class TextButton : public TextField{
 	bool pressed;
 public:
@@ -7,6 +10,7 @@ public:
 	void press();
 	void release();
 	bool isPressed();
+	bool intersect(Vec2 point);
 	~TextButton(void);
 };
 

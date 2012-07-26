@@ -5,5 +5,7 @@ class Convert{
 public:
 	static float degToRad(float* deg);
 	static double degToRad(double* deg);
+	static float degToRad(float deg);
+	static double degToRad(double deg);
 };
 

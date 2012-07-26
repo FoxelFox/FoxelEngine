@@ -1,6 +1,6 @@
 #include "BrushBox.h"
 #include "Editor.h"
-#include "FoxelManager.h"
+#include "Map.h"
 
 using namespace MapEditor;
 
@@ -47,26 +47,32 @@ void BrushBox::draw(){
 
 void BrushBox::move(Vec3 value){
 	moved += value;
+	bool was_moved = false;
 	if(moved.x > Editor::getGridDeep()){
-		moved.x = 0.0f;
+		was_moved = true;
 		snapedPosition.x += Editor::getGridDeep();
 	}else if(moved.x < -Editor::getGridDeep()){
-		moved.x = 0.0f;
+		was_moved = true;
 		snapedPosition.x -= Editor::getGridDeep();
 	}
 	if(moved.y > Editor::getGridDeep()){
-		moved.y = 0.0f;
+		was_moved = true;
 		snapedPosition.y += Editor::getGridDeep();
 	}else if(moved.y < -Editor::getGridDeep()){
-		moved.y = 0.0f;
+		was_moved = true;
 		snapedPosition.y -= Editor::getGridDeep();
 	}
 	if(moved.z > Editor::getGridDeep()){
-		moved.z = 0.0f;
+		was_moved = true;
 		snapedPosition.z += Editor::getGridDeep();
 	}else if(moved.z < -Editor::getGridDeep()){
-		moved.z = 0.0f;
+		was_moved = true;
 		snapedPosition.z -= Editor::getGridDeep();
+	}
+	if(was_moved){
+		moved.x = 0;
+		moved.y = 0;
+		moved.z = 0;
 	}
 }
 
@@ -74,24 +80,31 @@ void BrushBox::makeBlock(){
 	Vec3 start, stop;
 
 	if(paintStart.x <= paintStop.x){
-		start.x = paintStart.x; stop.x = paintStop.x + size.x;
+		start.x = paintStart.x; stop.x = paintStop.x + size.x-1;
 	}else{
-		start.x = paintStop.x; stop.x = paintStart.x + size.x;
+		start.x = paintStop.x; stop.x = paintStart.x + size.x-1;
 	}
 	if(paintStart.y <= paintStop.y){
-		start.y = paintStart.y; stop.y = paintStop.y + size.y;
+		start.y = paintStart.y; stop.y = paintStop.y + size.y-1;
 	}else{
-		start.y = paintStop.y; stop.y = paintStart.y + size.y;
+		start.y = paintStop.y; stop.y = paintStart.y + size.y-1;
 	}
 	if(paintStart.z <= paintStop.z){
-		start.z = paintStart.z; stop.z = paintStop.z + size.z;
+		start.z = paintStart.z; stop.z = paintStop.z + size.z-1;
 	}else{
-		start.z = paintStop.z; stop.z = paintStart.z + size.z;
+		start.z = paintStop.z; stop.z = paintStart.z + size.z-1;
 	}
-
+	/*
+	if(start.x < 0){ start.x++;}
+	if(start.y < 0){ start.y++;}
+	if(start.z < 0){ start.z++;}
+	if(stop.x < 0){ stop.x++;}
+	if(stop.y < 0){ stop.y++;}
+	if(stop.z < 0){ stop.z++;}
+	*/
 	std::cout << "Start: " << start.x << "\t" << start.y << "\t" << start.z << std::endl;
 	std::cout << "Stop:  " << stop.x << "\t" << stop.y << "\t" << stop.z << std::endl;
-	FoxelManager::makeBlock(start,stop,1);
+	Map::createBlock(start,stop,paintID, color);
 }
 
 void BrushBox::startPaint(){
@@ -107,4 +120,12 @@ void BrushBox::stopPaint(){
 		painting = false;
 		makeBlock();
 	}
+}
+
+void BrushBox::setPaintID(int id){
+	paintID = id;
+}
+
+void BrushBox::setColor(Color color){
+	this->color = color;
 }

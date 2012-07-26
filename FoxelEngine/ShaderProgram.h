@@ -6,7 +6,7 @@
 #define ShaderProgram PM	// Programm Manager
 
 namespace GLSL{
-	enum ProgramTyp { PROGRAM_NULL = 0, PROGRAM_BASIC = 1, PROGRAM_FOXEL = 2 };
+	enum ProgramTyp { PROGRAM_NULL = 0, PROGRAM_BASIC = 1, PROGRAM_FOXEL = 2, PROGRAM_MODEL = 3 , PROGRAM_POST = 4};
 
 	class ShaderProgram{
 	private:

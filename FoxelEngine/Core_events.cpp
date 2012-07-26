@@ -15,7 +15,6 @@ void Core::events(){
 			case SET_FOXEL: FoxelManager::settingFoxel((setFoxel*)curentEvent);break;
 			case PLAYMODE: startGame(); break;
 			case EDITMODE: startEditor(); break;
-			case SWITCH_DEBUG: FoxelManager::switchDebug(); break;
 			case EXIT:	   running = false;
 						   break;
 						

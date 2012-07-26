@@ -17,6 +17,10 @@ Main_Menu::~Main_Menu(void){
 }
 
 void Main_Menu::draw(){
+
+	glEnable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
+
 	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();

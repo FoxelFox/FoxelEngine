@@ -10,6 +10,12 @@ Core::Core(){
 	userState = ON_MAIN_MENU;
 	config = new Config();
 	sdlEvent = new SDL_Event();
+	player = NULL;
+	world = NULL;
+
+	debugMode = true;
+	tickrate = 32;
+	tick = 0;
 }
 
 bool Core::init(int argc, char *argv[]){
@@ -32,20 +38,11 @@ bool Core::init(int argc, char *argv[]){
 		}
 		cout << "Using GLEW " << glewGetString(GLEW_VERSION) << "\n\n";
 
-		// extensions
-		//fstream f;
-		//f.open("Extensions.log", ios::out);
-		//f << glGetString(GL_EXTENSIONS) << endl;
-		//f.close();
-
-		testing();
-
-
-        mainMenu = new Main_Menu();
+		mainMenu = new Main_Menu();
 		Event::BasicEvent::initEventSystem();
 		PM::useProg(PROGRAM_BASIC);
 		PM::useProg(PROGRAM_NULL);
-		GlobalLight::load();
+		FoxelManager::startChunkThreads(Config::getChunkThreads());
 		running = true;
 		return true;
 	}
@@ -53,14 +50,18 @@ bool Core::init(int argc, char *argv[]){
 
 void Core::startGame(){
 	userState = ON_GAME;
-	world = new World();
+	postPro = new PostProcessor();
+	delete world;
 	delete player;
-	player = new Player(PLAYER_NORMAL);
-	player->setTyp(PLAYER_FOX);				// debug
+
+	player = new Player(PLAYER_FOX);
+	world = new World();
+
 	screen->hideMouse();
 
 	// load data
-	world->load();;
+	postPro->load();
+	world->load();
 }
 
 void Core::startEditor(){
@@ -70,12 +71,22 @@ void Core::startEditor(){
 }
 
 void Core::update(float* time){
+	tick += *time;
 	switch(userState){
-    case ON_GAME:       player->update(time); break;
-    case ON_GAME_PAUSE: player->update(time); break;
-    case ON_MAIN_MENU:                        break;
-    case ON_EDIT:       editor->update(time); break;
-    }
+		case ON_GAME:
+			player->update(time);
+			if(tick > tickrate){
+				world->update();
+				tick = 0;
+			}
+			break;
+		case ON_GAME_PAUSE:
+			player->update(time);
+			mainMenu->update();
+			break;
+		case ON_MAIN_MENU:  mainMenu->update(); break;
+		case ON_EDIT:       editor->update(time); break;
+	}
 }
 
 void Core::render(){
@@ -84,48 +95,34 @@ void Core::render(){
 		//========================================#
 		case ON_GAME:       	PM::useProg(PROGRAM_FOXEL);
 								screen->load3DView();
+								postPro->setupToDraw();
 								player->render();
-                                world->render();
-                                break;
+								world->render();
+								postPro->draw();
+								world->drawGui();
+								break;
 		//========================================#
 		case ON_MAIN_MENU:      //PM::useProg(PROGRAM_FOXEL);
-			                    screen->load3DView();
-                                mainMenu->draw();
-                                break;
+								screen->load3DView();
+								mainMenu->draw();
+								break;
 							
 		//========================================#
 		case ON_GAME_PAUSE:     PM::useProg(PROGRAM_FOXEL);
-		                        screen->load3DView();
+								screen->load3DView();
 								player->render();
-								world->render();  
-                                mainMenu->draw();
-                                break;
+								world->render(); 
+								PM::useProg(PROGRAM_NULL);
+								mainMenu->draw();
+								break;
 							
 		//========================================#
 		case ON_EDIT:           editor->draw();
-                                break;
+								break;
 		//========================================#
 	}
-	SDL_GL_SwapBuffers();
+	screen->swap();
 }
 
 Core::~Core(void){
-}
-
-// Testing Area
-void Core::testing(){
-	float A[] = {1,2,0,1,
-		         0,0,3,0,
-			     1,0,2,0,
-				 0,0,0,2};
-	float B[] = {0,1,0,2,
-		         0,3,1,0,
-			     2,0,2,0,
-				 1,0,1,0};
-	
-	Matrix4 mA(A);
-	Matrix4 mB(B);
-
-	Matrix4 erg(mB*mA);
-	erg.printMatrix();
 }

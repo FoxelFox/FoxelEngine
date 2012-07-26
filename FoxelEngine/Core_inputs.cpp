@@ -1,32 +1,56 @@
 #include"Core.h"
 
 void Core::inputs(){
-	bool done = false;
-	
+
 	/* Schau nach, ob Events anliegen */
-	while ((!done) && SDL_PollEvent (sdlEvent)){  /* Solange noch Events vorhanden sind */
+	while (SDL_PollEvent (sdlEvent)){  /* Solange noch Events vorhanden sind */
 		
-		specialInputs(&done);
+		specialInputs();
 		switch(userState){
 			case ON_GAME:		inputOnGame();
-								done = true; break;
+								break;
 		
 			case ON_MAIN_MENU:	inputOnMenu();
-								done = true; break;
+								break;
 
 			case ON_GAME_PAUSE: inputOnMenu();
-								done = true; break;
+								break;
 
 			case ON_EDIT:		inputOnEdit();
-								done = true; break;
+								break;
 		}
 	}			
 }
 
-void Core::specialInputs(bool* done){
+void Core::specialInputs(){
 	switch (sdlEvent->type){
 		case SDL_QUIT:
 			exit (0);
+			break;
+
+		case SDL_KEYDOWN:  /* Tastaturevent */
+			switch(sdlEvent->key.keysym.sym){
+				case SDLK_F1: config->switchDebugMode(); break;
+				case SDLK_F2: config->setDisplayMode(DisplayMode::DISPLAY_QUAD); break;
+				case SDLK_F3: config->setDisplayMode(DisplayMode::DISPLAY_WITHOUT_RAD); break;
+				case SDLK_F4: config->setDisplayMode(DisplayMode::DISPLAY_NORMAL); break;
+			}
+			break;
+
+		case SDL_MOUSEBUTTONDOWN:  /* Tastaturevent */
+			switch(sdlEvent->button.button){
+				case SDL_BUTTON_LEFT: screen->setKlickLeft(true); break;
+				case SDL_BUTTON_RIGHT: screen->setKlickRight(true); break;
+				default: break;
+			}
+			break;
+
+		case SDL_MOUSEBUTTONUP:  /* Tastaturevent */
+			switch(sdlEvent->button.button){
+				case SDL_BUTTON_LEFT: screen->setKlickLeft(false); break;
+				case SDL_BUTTON_RIGHT: screen->setKlickRight(false); break;
+				default: break;
+			}
 			break;
 
 		case SDL_MOUSEMOTION:
@@ -36,8 +60,7 @@ void Core::specialInputs(bool* done){
 
 		case SDL_VIDEORESIZE:	
 			screen->resize(sdlEvent->resize.w,sdlEvent->resize.h);
-            if(userState == ON_EDIT){    editor->resize();}
-			*done = true;
+			if(userState == ON_EDIT){    editor->resize();}
 			break;
 	}
 }
@@ -62,6 +85,13 @@ void Core::inputOnGame(){
 		player->catchMouseMotion(sdlEvent->motion.xrel, sdlEvent->motion.yrel);
 		break;
 
+	case SDL_MOUSEBUTTONDOWN:
+		player->getControler()->catchMouseClick(sdlEvent->button.button);
+		break;
+	case SDL_MOUSEBUTTONUP:
+		player->getControler()->catchMouseRelease(sdlEvent->button.button);
+		break;
+
 	default: /* unbeachteter Event */
 		break;
 	}
@@ -78,15 +108,6 @@ switch (sdlEvent->type){
 	case SDL_KEYUP:		
 		break;
 
-	case SDL_MOUSEMOTION:
-		mainMenu->catchMousePosition(Vec2(sdlEvent->motion.x, sdlEvent->motion.y));
-		break;
-
-	case SDL_MOUSEBUTTONDOWN:
-		switch(sdlEvent->button.button){
-			case SDL_BUTTON_LEFT:
-				mainMenu->catchMouseClick(Vec2(sdlEvent->motion.x,sdlEvent->motion.y));
-		}
 	default: /* unbeachteter Event */
 		break;
 	}

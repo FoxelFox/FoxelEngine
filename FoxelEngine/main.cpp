@@ -13,7 +13,8 @@ int main(int argc, char *argv[]){
 			game.render();
 			endTime = (float) SDL_GetTicks();
 			renderTime = (endTime - startTime);
+
 		}
 	}
-	return 1;
+	return 0;
 }

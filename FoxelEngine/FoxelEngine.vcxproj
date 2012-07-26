@@ -66,19 +66,21 @@
     <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;C:\Program Files %28x86%29\boost;$(IncludePath)</IncludePath>
     <TargetName>Foxel Engine Debug</TargetName>
     <OutDir>..\..\..\..\Release\Debug</OutDir>
     <IntDir>..\..\..\..\Release\temp debug</IntDir>
+    <LibraryPath>C:\Program Files %28x86%29\boost\lib64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v7.0A\Include;C:\Program Files %28x86%29\boost;$(IncludePath)</IncludePath>
     <OutDir>..\..\..\..\Release\Ausgabe\</OutDir>
     <IntDir>..\..\..\..\Release\temp\</IntDir>
     <TargetName>Foxel Engine</TargetName>
+    <LibraryPath>C:\Program Files %28x86%29\boost\lib64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -120,6 +122,12 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -130,28 +138,39 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Axes.cpp" />
+    <ClCompile Include="BitCube.cpp" />
     <ClCompile Include="BitmapText.cpp" />
     <ClCompile Include="BrushBox.cpp" />
+    <ClCompile Include="GI_Light.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CollisionDetector.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ColorPanel.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Controler.cpp" />
     <ClCompile Include="Convert.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Core_events.cpp" />
     <ClCompile Include="Core_inputs.cpp" />
+    <ClCompile Include="DirectLight.cpp" />
     <ClCompile Include="DrawableGameComponent.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Entity_2D.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Foxel.cpp" />
     <ClCompile Include="FoxelManager.cpp" />
     <ClCompile Include="Foxel_Interaction.cpp" />
     <ClCompile Include="GameComponent.cpp" />
+    <ClCompile Include="GameGUI.cpp" />
     <ClCompile Include="GameMenu.cpp" />
-    <ClCompile Include="GlobalLight.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix4.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Pistol.cpp" />
+    <ClCompile Include="PostProcessor.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Menu.cpp" />
@@ -160,6 +179,7 @@
     <ClCompile Include="PropDynamic.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="SlideControl.cpp" />
     <ClCompile Include="TextButton.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="ToolBox.cpp" />
@@ -172,26 +192,38 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axes.h" />
+    <ClInclude Include="BitCube.h" />
     <ClInclude Include="BitmapText.h" />
     <ClInclude Include="BrushBox.h" />
+    <ClInclude Include="GI_Light.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionDetector.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="ColorPanel.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Controler.h" />
     <ClInclude Include="Convert.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="DirectLight.h" />
     <ClInclude Include="DrawableGameComponent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Entity_2D.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Foxel.h" />
     <ClInclude Include="FoxelManager.h" />
     <ClInclude Include="Foxel_Interaction.h" />
     <ClInclude Include="GameComponent.h" />
+    <ClInclude Include="GameGUI.h" />
     <ClInclude Include="GameMenu.h" />
-    <ClInclude Include="GlobalLight.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="Pistol.h" />
+    <ClInclude Include="PostProcessor.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Main_Menu.h" />
     <ClInclude Include="Player.h" />
@@ -200,6 +232,7 @@
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="SlideControl.h" />
     <ClInclude Include="TextButton.h" />
     <ClInclude Include="TextField.h" />
     <ClInclude Include="ToolBox.h" />

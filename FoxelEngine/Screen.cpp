@@ -4,6 +4,9 @@
 using namespace GLSL;
 
 float Screen::ar = 0;
+bool Screen::klickLeft = false;
+bool Screen::klickRight = false;
+bool Screen::isResized = false;
 int Screen::screenWidth = 0;
 int Screen::screenHeight = 0;
 Matrix4 Screen::ProjMatrix;
@@ -16,7 +19,7 @@ Vec2 Screen::mouseMotion = Vec2();
 Screen::Screen(int w, int h, bool isFullscreen)
 {
 	screenWidth = w;
-    screenHeight = h;
+	screenHeight = h;
 
 	SDL_WM_SetCaption("Foxel Engine", 0);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE,            8);
@@ -33,6 +36,9 @@ Screen::Screen(int w, int h, bool isFullscreen)
 	SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE,    8);
 
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,  0);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,  0);
+
+	//SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL,        1);	// vsync
 
 	// Fenster erstellen
 	if(isFullscreen){
@@ -49,12 +55,14 @@ Screen::Screen(int w, int h, bool isFullscreen)
 	}
 	
 	resize(screenWidth,screenHeight);
+
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 }
 
 void Screen::resize(int w, int h){
+	isResized = true;
 	screenWidth = w;
 	screenHeight = h;
 
@@ -69,13 +77,14 @@ void Screen::resize(int w, int h){
 }
 
 void Screen::load3DView(){
-	glEnable(GL_BLEND);
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 	glViewport(0,0,screenWidth,screenHeight);
-	buildProjectionMatrix(90, ar, 1.0, 1600.0);
+	buildProjectionMatrix(75, ar, 1.0, 2500.0);
 }
 
 void Screen::load2DView(){
-    glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, screenWidth, screenHeight);
 	glOrtho(0, screenWidth, 0, screenHeight , -128, 128);
@@ -92,7 +101,7 @@ void Screen::updateProjMatix(){
 }
 
 void Screen::buildProjectionMatrix(float fov, float ratio, float nearPlane, float farPlane) {
-	float f = 1.0f / tan (fov * ( M_PI / 360.0));
+	float f = 1.0f / tan (fov * ( (float)M_PI / 360.0f));
  
 	ProjMatrix = Matrix4::Identity();
 	ProjMatrix.matrix[0] = f / ratio;
@@ -107,9 +116,9 @@ void Screen::buildProjectionMatrix(float fov, float ratio, float nearPlane, floa
 
 void Screen::buildOrthoMatrix(float left, float right, float bottom, float top, float nearPlane, float farPlane){
 	ProjMatrix = Matrix4::Identity();
-	ProjMatrix.matrix[ 0] =  2.0 / (right - left);
-	ProjMatrix.matrix[ 5] =  2.0 / (top - bottom);
-	ProjMatrix.matrix[10] = -2.0 / (farPlane - nearPlane);
+	ProjMatrix.matrix[ 0] =  2.0f / (right - left);
+	ProjMatrix.matrix[ 5] =  2.0f / (top - bottom);
+	ProjMatrix.matrix[10] = -2.0f / (farPlane - nearPlane);
 	ProjMatrix.matrix[12] = -(right + left) / (right - left);
 	ProjMatrix.matrix[13] = -(top  + bottom) / (top  - bottom);
 	ProjMatrix.matrix[14] = -(farPlane  + nearPlane) / (farPlane - nearPlane);
@@ -119,6 +128,11 @@ void Screen::buildOrthoMatrix(float left, float right, float bottom, float top, 
 void Screen::catchMousePosition(Vec2 position){
 	position.y += Screen::getHeight() - 2 *position.y;
 	mousePosition = position;
+}
+
+void Screen::swap(){
+	isResized = false;
+	SDL_GL_SwapBuffers();
 }
 
 void Screen::catchMouseMotion(Vec2 value){
@@ -162,12 +176,36 @@ int Screen::getHeight(){
 	return screenHeight;
 }
 
+float Screen::getAspectRatio(){
+	return ar;
+}
+
 Vec2 Screen::getMousePosition(){
 	return mousePosition;
 }
 
 Vec2 Screen::getMouseMotion(){
 	return mouseMotion;
+}
+
+void Screen::setKlickLeft(bool boolean){
+	klickLeft = boolean;
+}
+
+void Screen::setKlickRight(bool boolean){
+	klickRight = boolean;
+}
+
+bool Screen::wasResized(){
+	return isResized;
+}
+
+bool Screen::isKlickLeft(){
+	return klickLeft;
+}
+
+bool Screen::isKlickRight(){
+	return klickRight;
 }
 
 Screen::~Screen(void)

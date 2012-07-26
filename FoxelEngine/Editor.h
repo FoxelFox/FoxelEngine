@@ -6,6 +6,7 @@
 #include "ToolBox.h"
 #include "Controler.h"
 #include "BrushBox.h"
+#include "ColorPanel.h"
 
 namespace MapEditor{
 	class Editor : public GameMenu{
@@ -16,9 +17,11 @@ namespace MapEditor{
 		View* activeView;
 		View* catchActiveView();
 		Axes* center;
+		ColorPanel* colorPanel;
 		BrushBox* brush;
 		bool playMode;
 		static int gridDeep;
+		void save();
 
 	public:
 		Editor(void);

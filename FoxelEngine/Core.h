@@ -8,7 +8,8 @@
 #include "Config.h"
 #include "Main_Menu.h"
 #include "Editor.h"
-#include "GlobalLight.h"
+#include "PostProcessor.h"
+
 
 enum{ON_MAIN_MENU = 0, ON_GAME = 1, ON_EDIT = 2, ON_GAME_PAUSE = 3};
 
@@ -22,15 +23,18 @@ private:
 	Player* player;
 	Main_Menu* mainMenu;
 	MapEditor::Editor* editor;
+	PostProcessor* postPro;
 
+	float tickrate, tick;
 	int userState;
+	bool debugMode;
 
 	void startGame();
 	void startEditor();
 	void inputOnGame();
 	void inputOnMenu();
 	void inputOnEdit();
-	void specialInputs(bool* done);
+	void specialInputs();
 
 public:
 	bool running;
@@ -43,7 +47,5 @@ public:
 	void update(float* time);
 	void render();
 	~Core(void);
-
-	void testing();
 };
 

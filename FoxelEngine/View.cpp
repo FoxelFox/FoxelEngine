@@ -1,5 +1,4 @@
 #include "View.h"
-#include "GlobalLight.h"
 #include <GL\freeglut.h>
 #include <math.h>
 #include <iostream>
@@ -26,8 +25,8 @@ void View::setUp(){
 	glViewport((GLsizei)position.x, (GLsizei)position.y, (GLsizei)size.x, (GLsizei)size.y);
 	glLoadIdentity();
 
-	glOrtho(-size.x/2, size.x/2, -size.y/2, size.y/2,-128,128); // old
-	Screen::buildOrthoMatrix(-size.x/2, size.x/2, -size.y/2, size.y/2,-128,128);
+	glOrtho(-size.x/2, size.x/2, -size.y/2, size.y/2,-65536,65536); // old
+	Screen::buildOrthoMatrix(-size.x/2, size.x/2, -size.y/2, size.y/2,-65536,65536);
 
 	glMatrixMode(GL_MODELVIEW);	// old
 	glLoadIdentity();			// old
@@ -55,7 +54,6 @@ void View::setUp(){
 		glVertex3f(xMax,yMin, -127.5);
 	glEnd();
 
-	GlobalLight::lightAt(Vec3(0,0,128));
 	glScalef(zoom,zoom,zoom); //old
 	Screen::ViewMatrix.scale(zoom,zoom,zoom);
 
@@ -94,6 +92,8 @@ void View::setUp(){
 	}
 		
 	if(viewMode == VIEW_3D){
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
 		float ar = (float) size.x / (float) size.y;
 		PM::useProg(PROGRAM_FOXEL);
 		Screen::buildProjectionMatrix(90.0f,ar,1.0f,2048.0f);
@@ -112,7 +112,7 @@ void View::update(float* time){
 }
 
 void View::draw(){
-	if(viewMode == VIEW_3D){	
+	if(viewMode == VIEW_3D){
 		PM::useProg(PROGRAM_FOXEL);
 	}	
 }

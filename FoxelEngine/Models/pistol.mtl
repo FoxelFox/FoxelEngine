@@ -1,0 +1,74 @@
+# Blender MTL File: 'pistole.blend'
+# Material Count: 6
+newmtl black_metal_District9SquirtgunSingle.jpg
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.048573 0.048573 0.048573
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd F:\Dropbox\Coding\pistole.blend\District9SquirtgunSingle.jpg
+
+
+newmtl farbe_District9SquirtgunSingle.jpg
+Ns 37.254902
+Ka 0.000000 0.000000 0.000000
+Kd 0.578444 0.062550 0.010962
+Ks 0.200000 0.149739 0.093433
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd F:\Dropbox\Coding\pistole.blend\District9SquirtgunSingle.jpg
+map_Ns F:\\Dropbox\\3D Art\\Texturen\\MetalBare0005_L.png
+map_Ks F:\\Dropbox\\3D Art\\Texturen\\MetalBare0005_L.png
+map_Bump F:\\Dropbox\\3D Art\\Texturen\\MetalBare0005_L.png
+
+
+newmtl messing_District9SquirtgunSingle.jpg
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.614521 0.351726 0.134616
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd F:\Dropbox\Coding\pistole.blend\District9SquirtgunSingle.jpg
+
+
+newmtl metall_District9SquirtgunSingle.jpg
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.516129
+illum 1
+map_Kd F:\Dropbox\Coding\pistole.blend\District9SquirtgunSingle.jpg
+map_Ks F:\\Dropbox\\3D Art\\Texturen\\MetalBare0005_L.png
+map_Bump F:\\Dropbox\\3D Art\\Texturen\\MetalBare0005_L.png
+
+
+newmtl metall_shiny_District9SquirtgunSingle.jpg
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.190655 0.191637 0.174496
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.516129
+illum 1
+map_Kd F:\Dropbox\Coding\pistole.blend\District9SquirtgunSingle.jpg
+
+
+newmtl plast_District9SquirtgunSingle.jpg
+Ns 29.411765
+Ka 0.000000 0.000000 0.000000
+Kd 0.025000 0.025000 0.025000
+Ks 0.200000 0.191891 0.160357
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd F:\Dropbox\Coding\pistole.blend\District9SquirtgunSingle.jpg
+map_Bump F:\\Dropbox\\3D Art\\Texturen\\Metall_verzinkt.jpg
+
+

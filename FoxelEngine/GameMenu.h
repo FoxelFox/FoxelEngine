@@ -13,5 +13,6 @@ public:
 	virtual void createEvents();
 	void catchMousePosition(Vec2 pos);
 	void catchMouseClick(Vec2 pos);
+	void update();
 	void draw();
 };

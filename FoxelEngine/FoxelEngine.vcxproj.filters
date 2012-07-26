@@ -85,6 +85,12 @@
     <Filter Include="Quelldateien\Map Editor\Brushes">
       <UniqueIdentifier>{55c57dae-2266-40a8-9dc9-3faa775ec363}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Entities\Props\Weapon">
+      <UniqueIdentifier>{28e16fe6-8f39-41d9-9f0f-381280085146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Forms\GameGUI">
+      <UniqueIdentifier>{5b627cae-7db7-4814-a7c7-01acb60ab926}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,9 +180,6 @@
     <ClCompile Include="Screen.cpp">
       <Filter>Quelldateien\Engine\Screen</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalLight.cpp">
-      <Filter>Quelldateien\Engine\Lighting</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Quelldateien\Engine\Shading\Shader</Filter>
     </ClCompile>
@@ -206,6 +209,45 @@
     </ClCompile>
     <ClCompile Include="BrushBox.cpp">
       <Filter>Quelldateien\Map Editor\Brushes</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Pistol.cpp">
+      <Filter>Quelldateien\Entities\Props\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Quelldateien\Entities\Props\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Quelldateien\World</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessor.cpp">
+      <Filter>Quelldateien\Engine\Shading</Filter>
+    </ClCompile>
+    <ClCompile Include="BitCube.cpp">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Quelldateien\Entities\Props\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="GameGUI.cpp">
+      <Filter>Quelldateien\Forms\GameGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionDetector.cpp">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorPanel.cpp">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SlideControl.cpp">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectLight.cpp">
+      <Filter>Quelldateien\Engine\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="GI_Light.cpp">
+      <Filter>Quelldateien\Engine\Lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,9 +332,6 @@
     <ClInclude Include="Screen.h">
       <Filter>Quelldateien\Engine\Screen</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalLight.h">
-      <Filter>Quelldateien\Engine\Lighting</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Quelldateien\Engine\Shading\Shader</Filter>
     </ClInclude>
@@ -322,6 +361,48 @@
     </ClInclude>
     <ClInclude Include="BrushBox.h">
       <Filter>Quelldateien\Map Editor\Brushes</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Quelldateien\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Pistol.h">
+      <Filter>Quelldateien\Entities\Props\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Quelldateien\Entities\Props\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Quelldateien\World</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessor.h">
+      <Filter>Quelldateien\Engine\Shading</Filter>
+    </ClInclude>
+    <ClInclude Include="BitCube.h">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>Quelldateien\Entities\Props\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="GameGUI.h">
+      <Filter>Quelldateien\Forms\GameGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionDetector.h">
+      <Filter>Quelldateien\Engine\Foxel</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorPanel.h">
+      <Filter>Quelldateien\Map Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SlideControl.h">
+      <Filter>Quelldateien\Forms\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectLight.h">
+      <Filter>Quelldateien\Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="GI_Light.h">
+      <Filter>Quelldateien\Engine\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Quelldateien\Engine\Lighting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

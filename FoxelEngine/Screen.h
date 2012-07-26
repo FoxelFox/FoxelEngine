@@ -15,7 +15,9 @@ private:
 	SDL_Surface* screen;
 	static int screenWidth, screenHeight;
 	static Vec2 mousePosition, mouseMotion;
+	static bool klickLeft,klickRight;
 	static float ar;
+	static bool isResized;
 
 public:
 	static Matrix4 ProjMatrix;
@@ -27,13 +29,16 @@ public:
 	void resize(int w, int h);
 	void catchMousePosition(Vec2 position);
 	void catchMouseMotion(Vec2 value);
+	void setKlickLeft(bool boolean);
+	void setKlickRight(bool boolean);
+	void swap();
 	SDL_Surface* getSurface();
 
 	static Vec2 getMousePosition();
 	static Vec2 getMouseMotion();
 	static void buildProjectionMatrix(float fov, float ratio, float nearPlane, float farPlane);
 	static void buildOrthoMatrix(float left, float right, float top, float bottom, float nearPlane, float farPlane);
-    static void load2DView();
+	static void load2DView();
 	static void load3DView();
 	static void updateViewMatix();
 	static void updateProjMatix();
@@ -44,6 +49,10 @@ public:
 	static GLfloat* getProjectionMatrix();
 	static GLfloat* getViewMatrix();
 
+	static bool wasResized();
+	static float getAspectRatio();
+	static bool isKlickLeft();
+	static bool isKlickRight();
 	static int getWidth();
 	static int getHeight();
 };

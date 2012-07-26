@@ -1,6 +1,11 @@
 #include "Config.h"
 #include <iostream>
 using namespace std;
+
+DisplayMode Config::displayMode = DISPLAY_NORMAL;
+bool Config::debug = true;
+int Config::chunkThreads = 1;
+
 Config::Config(void){
 
 	screenW = 1280;
@@ -25,37 +30,53 @@ void Config::readConfig(string fileName){
 		return;
 	}
 	for(unsigned int i = 0; i < configContent.size(); i++){
-		if(configContent[i] == "fullscreen"){
+		if(configContent[i] == "Fullscreen"){
 			if(configContent[i+1] == "false"){
 				fullscreen = false;
 			}
 		}
-		if(configContent[i] == "width"){
+		if(configContent[i] == "Width"){
 			stringstream ss;
 			ss << configContent[i+1];
 			ss >> screenW;
 		}
-		if(configContent[i] == "height"){
+		if(configContent[i] == "Height"){
 			stringstream ss;
 			ss << configContent[i+1];
 			ss >> screenH;
 		}
+		if(configContent[i] == "ChunkThreads"){
+			stringstream ss;
+			ss << configContent[i+1];
+			ss >> chunkThreads;
+		}
 	}
+}
 
+void Config::switchDebugMode(){
+	if(debug) debug = false;
+	else debug = true;
+}
+
+void Config::setDisplayMode(DisplayMode mode){
+	displayMode = mode;
 }
 
 int Config::getScreenW(){
 	return screenW;
 }
-
 int Config::getScreenH(){
 	return screenH;
 }
-
 bool Config::isFullscreen(){
 	return fullscreen;
 }
-
-Config::~Config(void)
-{
+bool Config::isDebug(){
+	return debug;
+}
+DisplayMode Config::getDisplayMode(){
+	return displayMode;
+}
+int Config::getChunkThreads(){
+	return chunkThreads;
 }

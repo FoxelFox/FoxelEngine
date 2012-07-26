@@ -12,7 +12,7 @@ protected:
 	std::vector<BitmapText> linesOfContent;
 	int* displayWidth;
 	int* displayHeight;
-	bool withBox;
+	bool withBox, bigText;
 	int boxPadding;
 	GLfloat textColor[3];
 
@@ -25,5 +25,7 @@ public:
 	void setContent(int,std::string);
 	void setTextColor(float r, float g, float b);
 	void draw();
+	void setBigText(bool boolean);
 	void newLine(std::string);
+	void setWithBox(bool boolean);
 };

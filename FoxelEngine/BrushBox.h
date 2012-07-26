@@ -3,6 +3,7 @@
 #include "DrawableGameComponent.h"
 #include "Vec3.h"
 #include "Screen.h"
+#include "Color.h"
 
 static GLfloat BoxV[] = {0.0f ,  0.0f ,  0.0f ,
 				 128.0f,  0.0f ,  0.0f ,
@@ -32,7 +33,9 @@ private:
 	Vec3 paintStart, paintStop;
 	Vec3 size;
 	bool painting;
+	int paintID;
 	void rebuildMesh();
+	Color color;
 public:
 	BrushBox(void);
 	~BrushBox(void);
@@ -41,6 +44,8 @@ public:
 	void stopPaint();
 	void move(Vec3 value);
 	void setSize(Vec3 size);
+	void setPaintID(int id);
 	void makeBlock();
+	void setColor(Color color);
 };
 

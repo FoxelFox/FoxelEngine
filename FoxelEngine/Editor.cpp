@@ -1,6 +1,5 @@
 #include <SDL\SDL.h>
 #include "Editor.h"
-#include "GlobalLight.h"
 
 using namespace MapEditor;
 using namespace GLSL;
@@ -13,6 +12,7 @@ Editor::Editor(void) : GameMenu(){
 	toolBox = new ToolBox(Vec2(0,0),Vec2(128,(float)Screen::getHeight()));
 	brush = new BrushBox();
 	center = new Axes();
+
 	center->load();
 
 	Vec2 viewSize;
@@ -23,6 +23,8 @@ Editor::Editor(void) : GameMenu(){
 	views.push_back(new View(VIEW_FRONT , Vec2(viewSize.x + toolBox->getSize().x, 0 ), viewSize));
 	views.push_back(new View(VIEW_3D	, Vec2(  0 + toolBox->getSize().x, viewSize.y), viewSize));
 
+	colorPanel = new ColorPanel(Vec2(Screen::getWidth() - 128 ,Screen::getHeight()-220), Vec2(128,220));
+	brush->setColor(colorPanel->getColor());
 }
 
 Editor::~Editor(void){
@@ -31,20 +33,26 @@ Editor::~Editor(void){
 void Editor::draw(){
 	Screen::load2DView();
 	toolBox->draw();
+	colorPanel->draw();
 	PM::useProg(PROGRAM_FOXEL);
 	for(int i = 0; i < 4; i++){
 		views[i]->setUp();
 		views[i]->draw();
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
 		FoxelManager::render();
 		PM::useProg(PROGRAM_BASIC);
 		brush->draw();
 		center->render();
 		glEnable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 	}
 	PM::useProg(PROGRAM_NULL);
 }
 
 void Editor::update(float* time){
+	Map::update();
+	toolBox->update();
 	bool mouseIsMoving = Screen::getMouseMotion().x != 0 || Screen::getMouseMotion().y != 0;
 	
 	if(controler->Grab || controler->midleMouseButton){
@@ -73,8 +81,15 @@ void Editor::update(float* time){
 
 	if(controler->Grab){
 		Screen::hideMouse();
-		if(controler->leftMouseButton) brush->startPaint();
-		else brush->stopPaint();
+		if(controler->leftMouseButton){
+			brush->startPaint();
+			brush->setPaintID(1);
+		}else if(controler->rightMouseButton){
+			brush->startPaint();
+			brush->setPaintID(0);
+		}else{
+			brush->stopPaint();
+		}
 		// Move Brush
 		if(!controler->midleMouseButton && mouseIsMoving && activeView != NULL){
 			switch(activeView->getViewMode()){
@@ -83,6 +98,13 @@ void Editor::update(float* time){
 			case VIEW_RIGHT:  brush->move(Vec3(0.0f,Screen::getMouseMotion().x / activeView->zoom,-Screen::getMouseMotion().y / activeView->zoom)); break;
 			}
 		}
+
+	}
+
+	// color panel
+	if(mouseIsMoving && controler->leftMouseButton && colorPanel->mouseIntersect()){
+		colorPanel->mouseInteraction();
+		brush->setColor(colorPanel->getColor());
 	}
 
 	// Move View if midleMouse Button is pressed
@@ -125,7 +147,9 @@ void Editor::resize(){
 
 	for(int i = 0; i < views.size(); i++){
 		views[i]->setSize(viewSize);
-	}     
+	}
+
+	colorPanel->resize(Vec2(Screen::getWidth() - 128 ,Screen::getHeight()-220));
 }
 
 void Editor::catchKeyDown(SDLKey sym){

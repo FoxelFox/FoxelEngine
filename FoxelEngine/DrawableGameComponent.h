@@ -17,5 +17,6 @@ public:
 	DrawableGameComponent(void);
 	~DrawableGameComponent(void);
 	void load();
+	virtual void draw(){}
 };
 

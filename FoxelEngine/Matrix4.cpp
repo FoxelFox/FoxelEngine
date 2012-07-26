@@ -4,18 +4,13 @@ using namespace std;
 
 
 Matrix4::Matrix4(void){
-	for(int n = 0; n < M_SIZE; n++){
-		for(int m = 0; m < M_SIZE; m++){
-			matrix[M_SIZE*n+m] = 0.0f;
-		}
+	for(int n = 0; n < M_SIZE*M_SIZE; n++){
+		if(n % 5 == 0) matrix[n] = 0.0f;	// identity
+		else matrix[n] = 0.0f;
 	}
 }
 
-Matrix4::Matrix4(float* mat){
-	for(int i = 0; i < 16; i++){
-		matrix[i] = mat[i];
-	}
-}
+
 Matrix4::~Matrix4(void)
 {
 }
@@ -45,6 +40,17 @@ void Matrix4::translate(float x,float y,float z){
 	trans.matrix[12] = x;
 	trans.matrix[13] = y;
 	trans.matrix[14] = z;
+	*this = *this * trans;
+}
+/*  =========================
+	Transponierte Translation
+	=========================
+*/
+void Matrix4::translate(Vec3 vector){
+	Matrix4 trans = Matrix4::Identity();
+	trans.matrix[12] = vector.x;
+	trans.matrix[13] = vector.y;
+	trans.matrix[14] = vector.z;
 	*this = *this * trans;
 }
 /*	======================
@@ -77,6 +83,59 @@ void Matrix4::rotate(float angle, float x, float y, float z){
 		rotZ.matrix[5] =  cos(angle);
 		*this = *this * rotZ;
 	}
+}
+
+Matrix4 Matrix4::RotateX(float angle){
+	Matrix4 rotX = Matrix4::Identity();
+	rotX.matrix[ 5] =  cos(angle);
+	rotX.matrix[ 9] = -sin(angle);
+	rotX.matrix[ 6] =  sin(angle);
+	rotX.matrix[10] =  cos(angle);
+	return rotX;
+}
+
+Matrix4 Matrix4::RotateY(float angle){
+	Matrix4 rotY = Matrix4::Identity();
+	rotY.matrix[ 0] =  cos(angle);
+	rotY.matrix[ 8] =  sin(angle);
+	rotY.matrix[ 2] = -sin(angle);
+	rotY.matrix[10] =  cos(angle);
+	return rotY;
+}
+
+Matrix4 Matrix4::RotateZ(float angle){
+	Matrix4 rotZ = Matrix4::Identity();			
+	rotZ.matrix[0] =  cos(angle);
+	rotZ.matrix[4] = -sin(angle);
+	rotZ.matrix[1] =  sin(angle);
+	rotZ.matrix[5] =  cos(angle);
+	return rotZ;
+}
+
+Matrix4 Matrix4::CreateFromAxisAngle(Vec3 axis, float angle){
+	Matrix4 mat;
+	angle = Convert::degToRad(angle);
+	float num = cos(-angle);
+    float num2 = sin(-angle);
+    float num3 = 1.0f - num;
+    axis.normalize();
+	mat.matrix[0]  = ((num3 * axis.x) * axis.x) + num;
+	mat.matrix[1]  = ((num3 * axis.x) * axis.y) - (num2 * axis.z);
+	mat.matrix[2]  = ((num3 * axis.x) * axis.z) + (num2 * axis.y);
+	mat.matrix[3]  = 0.0f;
+	mat.matrix[4]  = ((num3 * axis.x) * axis.y) + (num2 * axis.z);
+	mat.matrix[5]  = ((num3 * axis.y) * axis.y) + num;
+	mat.matrix[6]  = ((num3 * axis.y) * axis.z) - (num2 * axis.x);
+	mat.matrix[7]  = 0.0f;
+	mat.matrix[8]  = ((num3 * axis.x) * axis.z) - (num2 * axis.y);
+	mat.matrix[9]  = ((num3 * axis.y) * axis.z) + (num2 * axis.x);
+	mat.matrix[10] = ((num3 * axis.z) * axis.z) + num;
+	mat.matrix[11] = 0.0f;
+	mat.matrix[12] = 0.0f;
+	mat.matrix[13] = 0.0f;
+	mat.matrix[14] = 0.0f;
+	mat.matrix[15] = 1.0f;
+	return mat;
 }
 
 float* Matrix4::getMatrix(){
